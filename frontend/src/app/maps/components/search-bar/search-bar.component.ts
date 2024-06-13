@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { SearchResultsComponent } from '../search-results/search-results.component';
 import { PlacesService } from '@maps/services/places.service';
 
@@ -15,13 +15,13 @@ export class SearchBarComponent {
   // Definir los tipos en los types de tsconfig*
   #debounceTime?: NodeJS.Timeout;
   #placesSerive = inject(PlacesService);
+  numberItems = input<number>(0);
 
   onQueryChange(query: string = '') {
 
     if (this.#debounceTime) clearTimeout(this.#debounceTime);
 
     this.#debounceTime = setTimeout(() => {
-
       this.#placesSerive.getPlacesByQuery(query)
     }, 400);
 

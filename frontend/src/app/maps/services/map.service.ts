@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, effect, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { DirectionsApiClient } from '@maps/api/directionsApiClient';
 import { DirectionsResponse, Route } from '@maps/interfaces/directions.interface';
 import { Feature } from '@maps/interfaces/places.interface';
 import { Zone } from '@maps/interfaces/places.interfaces';
 import { places } from '@maps/mock/places';
 import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Popup } from 'mapbox-gl';
+import { retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +27,20 @@ export class MapService {
   });
 
   constructor(){
-    this.http.get('http://10.10.168.194:8080/sensor').subscribe(data => console.log(data))
+    this.http.get('http://10.10.168.194:8080/sensor')
+    .pipe(
+      retry(2)
+    )
+    .subscribe({
+      next: (data: any) => console.log(data),
+      error: (err: any) => console.error
+    })
   }
 
 
   // No signals
   private map?: Map;
-  private numberLocations = signal<number>(0);
+  public numberLocations = signal<number>(0);
 
   get isMapReady(): boolean {
     return !!this.map;
@@ -96,7 +104,7 @@ export class MapService {
 
     if (this.#mockPlaces().length === 0) return;
     // LIMITES DEL MAPA (Subir el scroll de los mapas)
-
+    this.numberLocations.set(newMarkers.length);
     const bounds = new LngLatBounds();
     newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
     // bounds.extend(userLocation);

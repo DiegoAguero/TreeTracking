@@ -6,6 +6,7 @@ import { MapViewComponent } from './screens/map-view/map-view.component';
 import { CorporateLogoComponent } from '@shared/components/corporate-logo/corporate-logo.component';
 import { BtnMyLocationComponent } from '@shared/components/btn-my-location/btn-my-location.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { MapService } from './services/map.service';
 
 @Component({
   selector: 'shared-screen',
@@ -16,11 +17,8 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
 export default class MapScreenComponent {
 
   public placesService = inject( PlacesService );
-
+  public mapService = inject( MapService );
   public isUserLocationReady = computed(() =>  this.placesService.isUserLocationReadyComputed() )
   constructor(){
   }
-
-
-
 }
