@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@WebServlet(name = "Sensor", urlPatterns = {"/sensor"})
+@WebServlet(name = "Sen sor", urlPatterns = {"/sensor"})
 public class Sensor extends HttpServlet {
 
     @Override

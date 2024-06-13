@@ -46,5 +46,6 @@ public class SensorsDAO {
             sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coords);
         }
         return sensor;
-    }  
+    }
+
 }
