@@ -58,7 +58,10 @@ public class SensorFilterByHumidity extends HttpServlet {
             if(humidity > 90.0f){
                 response.getWriter().write("");
             }else{
-                List<SensorsDTO> sensorFiltered = listSensors.stream().filter(sensor -> sensor.getHumidity() >= humidity && sensor.getHumidity() <= 100).sorted(Comparator.comparingDouble(SensorsDTO::getHumidity)).collect(Collectors.toList());
+                List<SensorsDTO> sensorFiltered = listSensors.stream()
+                .filter(sensor -> sensor.getHumidity() >= humidity && sensor.getHumidity() <= 100)
+                .sorted(Comparator.comparingDouble(SensorsDTO::getHumidity).reversed())
+                .collect(Collectors.toList());
                 String json = new Gson().toJson(sensorFiltered);
                 response.getWriter().write(json);
             }
