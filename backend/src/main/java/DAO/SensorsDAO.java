@@ -1,12 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 import DTO.SensorsDTO;
 import java.sql.*;
 import java.util.*;
-import DAO.ConnectionDAO;
 import DTO.CoordinatesDTO;
 
 public class SensorsDAO {
@@ -27,6 +22,7 @@ public class SensorsDAO {
             SensorsDTO sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coords);
             sensorList.add(sensor);
         }
+        conn.close();
         return sensorList;
     }   
     public SensorsDTO getSensorById(int id) throws SQLException{
@@ -45,6 +41,7 @@ public class SensorsDAO {
             CoordinatesDTO coords = new CoordinatesDAO().getCoordsById(coordId);
             sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coords);
         }
+        conn.close();
         return sensor;
     }
 

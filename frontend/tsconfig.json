@@ -18,10 +18,21 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
+    "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": false,
+    "paths": {
+      "@shared/*": ["./src/app/shared/*"],
+      "@maps/*": ["./src/app/maps/*"],
+      "@environments/*": [
+        "./src/environments/*"
+      ],
+    },
     "lib": [
       "ES2022",
       "dom"
+    ],
+    "types": [
+      "node",
     ]
   },
   "angularCompilerOptions": {
