@@ -1,8 +1,6 @@
 package Controller;
 
-import DAO.CoordinatesDAO;
 import DAO.SensorsDAO;
-import DTO.CoordinatesDTO;
 import DTO.SensorsDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
