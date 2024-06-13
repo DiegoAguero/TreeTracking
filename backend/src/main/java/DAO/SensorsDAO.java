@@ -27,6 +27,7 @@ public class SensorsDAO {
             SensorsDTO sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coords);
             sensorList.add(sensor);
         }
+        conn.close();
         return sensorList;
     }   
     public SensorsDTO getSensorById(int id) throws SQLException{
@@ -45,6 +46,7 @@ public class SensorsDAO {
             CoordinatesDTO coords = new CoordinatesDAO().getCoordsById(coordId);
             sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coords);
         }
+        conn.close();
         return sensor;
     }  
 }

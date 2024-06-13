@@ -10,6 +10,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jakartaee>10.0.0</jakartaee>
+        <maven.compile.source>21</maven.compile.source>
+        <maven.compiler.target>21</maven.compiler.target>
     </properties>
     
     <dependencies>
