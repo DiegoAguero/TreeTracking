@@ -4,17 +4,20 @@
  */
 package DTO;
 
-/**
- *
- * @author Diego Estudio
- */
 public class CoordinatesDTO {
+    private int id;
     private double X;
     private double Y;
 
-    public CoordinatesDTO(double X, double Y) {
+ 
+    public CoordinatesDTO(int id, double X, double Y) {
+        this.id = id;
         this.X = X;
         this.Y = Y;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public void setX(double X) {
@@ -24,7 +27,11 @@ public class CoordinatesDTO {
     public void setY(double Y) {
         this.Y = Y;
     }
-
+    
+    public int getId() {
+        return id;
+    }
+    
     public double getX() {
         return X;
     }

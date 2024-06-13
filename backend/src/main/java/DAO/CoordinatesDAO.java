@@ -12,7 +12,32 @@ import DTO.CoordinatesDTO;
  */
 public class CoordinatesDAO {
     public CoordinatesDAO(){}
-    public ArrayList<CoordinatesDTO> getCoordsById(int id, Connection sta){
-        String SQLQuery = "SELECT * FROM coordenadas";
+    public ArrayList<CoordinatesDTO> getCoordsById(int id, Connection stablishConnection) throws SQLException{
+        String SQLQuery = "SELECT * FROM coordenadas WHERE id = " + id;
+        Statement st = stablishConnection.createStatement();
+        ResultSet rs = st.executeQuery(SQLQuery);
+        ArrayList<CoordinatesDTO> coordList = new ArrayList<CoordinatesDTO>();
+        while(rs.next()){
+            int idCoord = rs.getInt("id");
+            double x = rs.getDouble("coordX");
+            double y = rs.getDouble("coordY");
+            CoordinatesDTO coord = new CoordinatesDTO(idCoord, x, y);
+            coordList.add(coord);
+        }
+        return coordList;
     } 
+        public ArrayList<CoordinatesDTO> getCoords(Connection stablishConnection) throws SQLException{
+        String SQLQuery = "SELECT * FROM coordenadas";
+        Statement st = stablishConnection.createStatement();
+        ResultSet rs = st.executeQuery(SQLQuery);
+        ArrayList<CoordinatesDTO> coordList = new ArrayList<CoordinatesDTO>();
+        while(rs.next()){
+            int idCoord = rs.getInt("id");
+            double x = rs.getDouble("coordX");
+            double y = rs.getDouble("coordY");
+            CoordinatesDTO coord = new CoordinatesDTO(idCoord, x, y);
+            coordList.add(coord);
+        }
+        return coordList;
+    }
 }

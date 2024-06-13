@@ -4,23 +4,25 @@
  */
 package DTO;
 
-/**
- *
- * @author Diego Estudio
- */
 public class SensorsDTO {
+    private int id;
     private float humidity;
     private boolean isOnFire;
     private String description;
     private int coordID;
 
-    public SensorsDTO(float humidity, boolean isOnFire, String description, int coordID) {
+    public SensorsDTO(int id, float humidity, boolean isOnFire, String description, int coordID) {
+        this.id = id;
         this.humidity = humidity;
         this.isOnFire = isOnFire;
         this.description = description;
         this.coordID = coordID;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setHumidity(float humidity) {
         this.humidity = humidity;
     }
@@ -37,6 +39,10 @@ public class SensorsDTO {
         this.coordID = coordID;
     }
 
+    public int getId() {
+        return id;
+    }
+    
     public float getHumidity() {
         return humidity;
     }
