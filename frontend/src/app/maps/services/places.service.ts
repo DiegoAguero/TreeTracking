@@ -34,7 +34,6 @@ export class PlacesService {
           resolve([coords.longitude, coords.latitude]);
         },
         (err) => {
-          console.log(err);
           alert('No se pudo obtener la geolocalización');
           reject();
         }
@@ -66,7 +65,8 @@ export class PlacesService {
           next: (features) => {
             this.isLoadingPlaces.set(!this.isLoadingPlaces());
             this.placesSignal.set(features);
-            this.#mapService.createMarkersFromPlaces(this.placesSignal(), this.userLocationComputed()! )
+            // this.#mapService.createMarkersFromPlaces(this.placesSignal(), this.userLocationComputed()! );
+            // this.#mapService.createMarkesFromPlacesMock(this.userLocationComputed()!);
           }
         }
       )

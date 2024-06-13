@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { PlacesService } from './services/places.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { CommonModule } from '@angular/common';
@@ -19,8 +19,8 @@ export default class MapScreenComponent {
 
   public isUserLocationReady = computed(() =>  this.placesService.isUserLocationReadyComputed() )
   constructor(){
-
   }
+
 
 
 }
