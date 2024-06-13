@@ -11,4 +11,13 @@
     <welcome-file-list>
         <welcome-file>sensor</welcome-file>
     </welcome-file-list>
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>CorsFilter.CorsFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>
 </web-app>

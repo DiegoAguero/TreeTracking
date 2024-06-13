@@ -3,7 +3,8 @@ import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 
 import Mapboxgl from 'mapbox-gl';
-import { environment } from '@environments/environments.prod';
+import { environment } from './environments/environments';
+
 
 Mapboxgl.accessToken = environment.TOKEN_MAP_BOX;
 

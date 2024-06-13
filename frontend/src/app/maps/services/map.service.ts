@@ -13,7 +13,7 @@ import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Po
 export class MapService {
 
   // MOCK
-  #mockPlaces = signal <Zone[]>(places);
+  #mockPlaces = signal <Zone[]>([]);
 
   // Whit Signals
   private mapSignal = signal<Map | undefined>(undefined);
@@ -26,10 +26,7 @@ export class MapService {
   });
 
   constructor(){
-    this.http.get('http://10.10.168.194:8080/sensor').subscribe(data => console.log(data))
   }
-
-
   // No signals
   private map?: Map;
   private numberLocations = signal<number>(0);
@@ -41,7 +38,15 @@ export class MapService {
   setMap(map: Map): void {
     this.map = map;
     this.mapSignal.set(map);
-    this.createMarkesFromPlacesMock();
+    this.http.get<Zone[]>('http://localhost:3000/').subscribe({
+      next: (zones) => {
+        this.#mockPlaces.set( zones );
+        this.createMarkesFromPlacesMock();
+      }, error: () => {
+        this.#mockPlaces.set( places );
+        this.createMarkesFromPlacesMock();
+      }
+    });
   }
 
   flyTo(coords: LngLatLike) {

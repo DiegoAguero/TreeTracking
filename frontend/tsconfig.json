@@ -24,7 +24,7 @@
       "@shared/*": ["./src/app/shared/*"],
       "@maps/*": ["./src/app/maps/*"],
       "@environments/*": [
-        "./src/environments/*"
+        "./src/app/environments/*"
       ],
     },
     "lib": [
