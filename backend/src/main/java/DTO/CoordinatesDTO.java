@@ -1,36 +1,39 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DTO;
 
-/**
- *
- * @author Diego Estudio
- */
 public class CoordinatesDTO {
-    private double X;
-    private double Y;
 
-    public CoordinatesDTO(double X, double Y) {
-        this.X = X;
-        this.Y = Y;
-    }
-    
-    public void setX(double X) {
-        this.X = X;
-    }
+    private int ID;
+    private double coordX;
+    private double coordY;
 
-    public void setY(double Y) {
-        this.Y = Y;
+    public CoordinatesDTO(int ID, double coordX, double coordY) {
+        this.ID = ID;
+        this.coordX = coordX;
+        this.coordY = coordY;
     }
 
-    public double getX() {
-        return X;
+    public int getID() {
+        return ID;
     }
 
-    public double getY() {
-        return Y;
+    public void setID(int ID) {
+        this.ID = ID;
     }
-    
+
+    public double getCoordX() {
+        return coordX;
+    }
+
+    public void setCoordX(double coordX) {
+        this.coordX = coordX;
+    }
+
+    public double getCoordY() {
+        return coordY;
+    }
+
+    public void setCoordY(double coordY) {
+        this.coordY = coordY;
+    }
+
 }
