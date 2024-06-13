@@ -12,9 +12,10 @@ import DTO.CoordinatesDTO;
  */
 public class CoordinatesDAO {
     public CoordinatesDAO(){}
-    public ArrayList<CoordinatesDTO> getCoordsById(int id, Connection stablishConnection) throws SQLException{
+    public ArrayList<CoordinatesDTO> getCoordsById(int id) throws SQLException{
         String SQLQuery = "SELECT * FROM coordenadas WHERE id = ?";
-        PreparedStatement st = stablishConnection.prepareStatement(SQLQuery);
+        Connection conn = ConnectionDAO.getConnection();
+        PreparedStatement st = conn.prepareStatement(SQLQuery);
         st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         ArrayList<CoordinatesDTO> coordList = new ArrayList<CoordinatesDTO>();
@@ -27,9 +28,11 @@ public class CoordinatesDAO {
         }
         return coordList;
     } 
-        public ArrayList<CoordinatesDTO> getCoords(Connection stablishConnection) throws SQLException{
+        public ArrayList<CoordinatesDTO> getCoords() throws SQLException{
         String SQLQuery = "SELECT * FROM coordenadas";
-        Statement st = stablishConnection.createStatement();
+        Connection conn = ConnectionDAO.getConnection();
+
+        Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(SQLQuery);
         ArrayList<CoordinatesDTO> coordList = new ArrayList<CoordinatesDTO>();
         while(rs.next()){

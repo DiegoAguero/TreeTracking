@@ -6,15 +6,14 @@ package DAO;
 import DTO.SensorsDTO;
 import java.sql.*;
 import java.util.*;
-/**
- *
- * @author Diego Estudio
- */
+import DAO.ConnectionDAO;
+
 public class SensorsDAO {
     public SensorsDAO(){}
-    public ArrayList<SensorsDTO> getSensors(Connection stablishConnection) throws SQLException{
+    public ArrayList<SensorsDTO> getSensors() throws SQLException{
         String SQLQuery = "SELECT * FROM sensores";
-        Statement st = stablishConnection.createStatement();
+        Connection conn = ConnectionDAO.getConnection();
+        Statement st = conn.createStatement();
         ResultSet rs = st.executeQuery(SQLQuery);
         ArrayList<SensorsDTO> sensorList = new ArrayList<SensorsDTO>();
         while(rs.next()){
@@ -28,13 +27,14 @@ public class SensorsDAO {
         }
         return sensorList;
     }   
-    public ArrayList<SensorsDTO> getSensorById(int id, Connection stablishConnection) throws SQLException{
+    public ArrayList<SensorsDTO> getSensorById(int id) throws SQLException{
         String SQLQuery = "SELECT * FROM sensores WHERE id = ?";
-        PreparedStatement st = stablishConnection.prepareStatement(SQLQuery);
+        Connection conn = ConnectionDAO.getConnection();
+        PreparedStatement st = conn.prepareStatement(SQLQuery);
         st.setInt(1, id);
         ResultSet rs = st.executeQuery();
         ArrayList<SensorsDTO> sensorList = new ArrayList<SensorsDTO>();
-         while(rs.next()){
+        while(rs.next()){
             int idSensor = rs.getInt("id");
             float humidity = rs.getFloat("humedad");
             boolean isOnFire = rs.getBoolean("hayFuego");
@@ -42,7 +42,7 @@ public class SensorsDAO {
             int coordId = rs.getInt("coordID");
             SensorsDTO sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coordId);
             sensorList.add(sensor);
-         }
+        }
         return sensorList;
     }  
 }
