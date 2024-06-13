@@ -5,14 +5,14 @@ public class SensorsDTO {
     private float humidity;
     private boolean isOnFire;
     private String description;
-    private int coordID;
+    private CoordinatesDTO coords;
 
-    public SensorsDTO(int id, float humidity, boolean isOnFire, String description, int coordID) {
+    public SensorsDTO(int id, float humidity, boolean isOnFire, String description, CoordinatesDTO coords) {
         this.id = id;
         this.humidity = humidity;
         this.isOnFire = isOnFire;
         this.description = description;
-        this.coordID = coordID;
+        this.coords = coords;
     }
 
     public void setId(int id) {
@@ -31,8 +31,8 @@ public class SensorsDTO {
         this.description = description;
     }
 
-    public void setCoordID(int coordID) {
-        this.coordID = coordID;
+    public void setCoordID(CoordinatesDTO coords) {
+        this.coords = coords;
     }
 
     public int getId() {
@@ -51,8 +51,8 @@ public class SensorsDTO {
         return description;
     }
 
-    public int getCoordID() {
-        return coordID;
+    public CoordinatesDTO getCoordID() {
+        return coords;
     }
     
 }

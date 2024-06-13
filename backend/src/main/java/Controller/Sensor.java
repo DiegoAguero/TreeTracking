@@ -1,7 +1,9 @@
 package Controller;
 
 import DAO.CoordinatesDAO;
+import DAO.SensorsDAO;
 import DTO.CoordinatesDTO;
+import DTO.SensorsDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,9 +23,9 @@ public class Sensor extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            ArrayList<CoordinatesDTO> listCoordinates;
-            listCoordinates = new CoordinatesDAO().getCoords();
-            String json = new Gson().toJson(listCoordinates);
+            ArrayList<SensorsDTO> listSensors;
+            listSensors = new SensorsDAO().getSensors();
+            String json = new Gson().toJson(listSensors);
             response.getWriter().write(json);
         } catch (SQLException ex) {
             Logger.getLogger(Sensor.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,5 +35,6 @@ public class Sensor extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
     }
 }
