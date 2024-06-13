@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class SensorsDAO {
     public SensorsDAO(){}
-    public ArrayList<SensorsDTO> getData(Connection stablishConnection) throws SQLException{
+    public ArrayList<SensorsDTO> getSensors(Connection stablishConnection) throws SQLException{
         String SQLQuery = "SELECT * FROM sensores";
         Statement st = stablishConnection.createStatement();
         ResultSet rs = st.executeQuery(SQLQuery);
@@ -26,5 +26,23 @@ public class SensorsDAO {
             SensorsDTO sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coordId);
             sensorList.add(sensor);
         }
+        return sensorList;
     }   
+    public ArrayList<SensorsDTO> getSensorById(int id, Connection stablishConnection) throws SQLException{
+        String SQLQuery = "SELECT * FROM sensores WHERE id = ?";
+        PreparedStatement st = stablishConnection.prepareStatement(SQLQuery);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
+        ArrayList<SensorsDTO> sensorList = new ArrayList<SensorsDTO>();
+         while(rs.next()){
+            int idSensor = rs.getInt("id");
+            float humidity = rs.getFloat("humedad");
+            boolean isOnFire = rs.getBoolean("hayFuego");
+            String description = rs.getString("descripcion");
+            int coordId = rs.getInt("coordID");
+            SensorsDTO sensor = new SensorsDTO(idSensor, humidity, isOnFire, description, coordId);
+            sensorList.add(sensor);
+         }
+        return sensorList;
+    }  
 }

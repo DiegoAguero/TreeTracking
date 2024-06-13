@@ -13,9 +13,10 @@ import DTO.CoordinatesDTO;
 public class CoordinatesDAO {
     public CoordinatesDAO(){}
     public ArrayList<CoordinatesDTO> getCoordsById(int id, Connection stablishConnection) throws SQLException{
-        String SQLQuery = "SELECT * FROM coordenadas WHERE id = " + id;
-        Statement st = stablishConnection.createStatement();
-        ResultSet rs = st.executeQuery(SQLQuery);
+        String SQLQuery = "SELECT * FROM coordenadas WHERE id = ?";
+        PreparedStatement st = stablishConnection.prepareStatement(SQLQuery);
+        st.setInt(1, id);
+        ResultSet rs = st.executeQuery();
         ArrayList<CoordinatesDTO> coordList = new ArrayList<CoordinatesDTO>();
         while(rs.next()){
             int idCoord = rs.getInt("id");
