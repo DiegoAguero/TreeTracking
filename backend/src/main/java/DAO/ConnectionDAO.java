@@ -5,13 +5,13 @@ import java.sql.*;
 import java.util.Properties;
 import java.util.logging.*;
 
-public class Connection {
+public class ConnectionDAO {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final Properties properties = new Properties();
 
     static {
-        try (InputStream inputStream = Connection.class.getClassLoader().getResourceAsStream("config.properties")) {
+        try (InputStream inputStream = ConnectionDAO.class.getClassLoader().getResourceAsStream("config.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
@@ -26,11 +26,11 @@ public class Connection {
         Connection conn = null;
         try {
             Class.forName(DRIVER);
-            conn = (Connection) DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (SQLException e) {
             throw e;
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Connection.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConnectionDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return conn;
     }
