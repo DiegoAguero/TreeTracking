@@ -1,0 +1,9 @@
+<ul class="w-full grid gap-3 grid-flow-col place-items-center">
+  @for (rou of defineRoute; track $index) {
+    <li>
+      <a [routerLink]="rou.path">
+        {{ rou.title }}
+      </a>
+    </li>
+  }
+</ul>
