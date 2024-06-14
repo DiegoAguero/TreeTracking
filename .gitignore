@@ -23,8 +23,9 @@
 hs_err_pid*
 replay_pid*
 
+#System files
+./node_modules
+
 #bd
 config.properties
 /backend/target/
-/node_modules
-
