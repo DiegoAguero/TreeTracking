@@ -7,11 +7,12 @@ import { CorporateLogoComponent } from '@shared/components/corporate-logo/corpor
 import { BtnMyLocationComponent } from '@shared/components/btn-my-location/btn-my-location.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { MapService } from './services/map.service';
+import { InformationComponent } from '@shared/components/information/information.component';
 
 @Component({
   selector: 'shared-screen',
   standalone: true,
-  imports: [LoadingComponent, CommonModule, MapViewComponent, CorporateLogoComponent, BtnMyLocationComponent, SearchBarComponent ],
+  imports: [LoadingComponent, CommonModule, MapViewComponent, CorporateLogoComponent, BtnMyLocationComponent, SearchBarComponent, InformationComponent ],
   templateUrl: './map-screen.component.html',
 })
 export default class MapScreenComponent {

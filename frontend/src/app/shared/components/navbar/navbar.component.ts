@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink, Routes } from '@angular/router';
+import { routersLinksI } from '../../../interfaces/routes.interface';
 // import { routersLinksI } from '@interfaces/routes.interface';
 
 @Component({
@@ -10,18 +11,18 @@ import { RouterLink, Routes } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  // @Input({
-  //   required: true, transform: (value:Routes) => {
-  //     if( !value ) return value;
-  //     return value.map( ({ path, title, children })=> {
-  //         return {
-  //           path,
-  //           title,
-  //           children
-  //         } as routersLinksI
-  //     }).filter( rou => rou.path !== '**' );
-  //   }
-  // }) defineRoute!: routersLinksI[];
+  @Input({
+    required: true, transform: (value:Routes) => {
+      if( !value ) return value;
+      return value.map( ({ path, title, children })=> {
+          return {
+            path,
+            title,
+            children
+          } as routersLinksI
+      }).filter( rou => rou.path !== '**' );
+    }
+  }) defineRoute!: routersLinksI[];
 
   ngOnInit(): void {
 

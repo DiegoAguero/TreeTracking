@@ -15,18 +15,5 @@
       Search place...
     </label>
   </div>
-  <maps-search-results />
-  <div class="w-full grid place-items-center">
-    <p>Number of elements: <span class="text-emerald-600 underline underline-offset-2 text-lg">{{numberItems()}}</span></p>
-  </div>
-  <div class="w-full grid place-items-center">
-
-    <!-- @for(let item of zones; track $index ){
-      <div>
-        <span [style]="item.color" class="text-bol">
-          {{ item.title }}
-        </span>
-      </div>
-    } -->
-  </div>
+  <maps-search-results (emitSearch)="txtQuery.value = ''" />
 </div>

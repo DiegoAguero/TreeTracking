@@ -1,0 +1,35 @@
+<div class="search-container grid grid-cols-1 gap-2 h-auto  custom-align bg-black/45 rounded p-2 mx-3">
+  <div class="relative" data-te-input-wrapper-init>
+    <div class="flex w-full">
+      <span (click)="closePopup()"
+        [ngClass]="{
+          'bg-red-600': !isClosePopup(),
+          'bg-green-600' : isClosePopup()
+        }"
+        class="w-2 h-2 rounded cursor-pointer ml-auto"
+
+        [title]="!isClosePopup() ? 'Close' : 'Open'"
+      ></span>
+    </div>
+    <div #popup
+      [ngClass]="{
+        'popup': !isClosePopup(),
+        'popup-active': isClosePopup()
+      }"
+    >
+      <div class="w-full grid place-items-center">
+        <p class="text-xs text-white">Number of elements: <span class="underline underline-offset-2 ">{{numberItems()}}</span>
+        </p>
+      </div>
+      <div class="w-full grid grid-flow-col gap-3 place-items-center mt-2">
+        @for (item of zones; track $index) {
+          <div class="w-auto h-auto flex flex-col place-items-center gap-1">
+            <div class="w-10 text-xs h-5 rounded" [title]="item.title" [style]="item.bgColor"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,16 +1,17 @@
 @if(isLoadingPLacesComputed()){
-<div class="mt-4 bg- w-full h-auto">
-  <h6 class="text-gray-600 animate-pulse text-center">Searching..</h6>
-  <p class="text-gray-600 animate-pulse">Please wait</p>
-</div>
+  <div class="mt-4 bg- w-full h-auto">
+    <h6 class="text-gray-600 animate-pulse text-center">Searching..</h6>
+    <p class="text-gray-600 animate-pulse">Please wait</p>
+  </div>
 }
+
 @for (place of placesComputed(); track place.id) {
   <ul class="max-w-md divide-y mt-4 divide-gray-200 dark:divide-gray-700">
     <li
       class="pb-3 sm:pb-4 hover:bg-slate-200 cursor-pointer grid rounded place-items-center md:place-items-start p-3 border"
       [class]="place.id === selectedId() ? 'bg-slate-200' : ''" (click)="flyTo( place )">
       <h6 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600">
-        {{ place.text_es}}
+        {{ place.text_es }}
       </h6>
       <p class="text-base leading-normal tracking-normal text-gray-700 font-normal">
         {{ place.place_name }}
@@ -18,5 +19,4 @@
       <shared-btn-custom (emitClick)="getDirections( place )" textBtn="Addresses" />
     </li>
   </ul>
-
 }

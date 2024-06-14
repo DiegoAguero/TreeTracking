@@ -2,3 +2,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root{
+  --close-color: crismon;
+}
+
+.mapboxgl-popup-close-button
+{
+  margin: .3rem;
+  color: crimson;
+  border-radius: .2rem;
+  border-color: crimson;
+  padding: 0 .2rem 0 .2rem;
+  width: 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+  vertical-align: bottom;
+  &:hover{
+    color:white;
+    background-color: crimson;
+    transition: .2s linear;
+  }
+}
+.popup-marker{
+  margin: 1rem 0 0 0;
+}
+

@@ -26,6 +26,7 @@
       "@environments/*": [
         "./src/environments/*"
       ],
+      "@utils/*": ["./src/app/utils/*"]
     },
     "lib": [
       "ES2022",

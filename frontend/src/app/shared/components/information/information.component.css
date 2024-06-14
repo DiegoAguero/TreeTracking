@@ -1,0 +1,60 @@
+.custom-align {
+  position: absolute;
+  bottom: 12rem;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.popup{
+  animation-name: popup;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+}
+.popup-active {
+  animation-name: popup-active;
+  animation-duration: .5s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: initial;
+}
+
+@keyframes popup-active {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    height: auto;
+  }
+  50%{
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(-100px);
+    height: 0;
+  }
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+    height: 0;
+  }
+  50%{
+    height: auto;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+

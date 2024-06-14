@@ -5,8 +5,8 @@ import { DirectionsResponse, Route } from '@maps/interfaces/directions.interface
 import { Feature } from '@maps/interfaces/places.interface';
 import { Zone } from '@maps/interfaces/places.interfaces';
 import { places } from '@maps/mock/places';
+import { typeSVG } from '@shared/svg/svg';
 import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Popup } from 'mapbox-gl';
-import { retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,13 +29,16 @@ export class MapService {
   constructor(){
   }
 
-
   // No signals
   private map?: Map;
   public numberLocations = signal<number>(0);
 
   get isMapReady(): boolean {
     return !!this.map;
+  }
+
+  get allMarkers(){
+    return this.markers();
   }
 
   setMap(map: Map): void {
@@ -64,6 +67,7 @@ export class MapService {
     this.markers.update(marker => []);
     const newMarkers: Marker[] = [];
     for (let { id, coords, isOnFire, description, humidity } of this.#mockPlaces()){
+      let svg = typeSVG(humidity);
       // Comprobar el isOnFire
       const { coordX, coordY } = coords;
       const popup:Popup = new Popup()
@@ -72,7 +76,10 @@ export class MapService {
             class="popup-marker w-56 rounded-lg grid gap-2 p-2"
             data-id="${id}"
           >
-            <h6 class="font-bold text-end" style="color: ${this.colorMarker(humidity)}">${humidity}%</h6>
+            <div class="flex justify-end">
+              ${svg}
+              <h6 class="font-bold text-end" style="color: ${this.colorMarker(humidity)}">${humidity}%</h6>
+            </div>
             <span>${description}</span>
             <button class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-1 py-1 text-center me-2 mb-2">Information</button>
           </div>
@@ -108,13 +115,13 @@ export class MapService {
   colorMarker(humidity: number): string{
     // 0 - 30 yellow , 40 - 60 green , 60 - 100 lightblue
     if (humidity >= 0 && humidity < 30){
-      return 'red';
+      return '#ff4500';
     }
     if (humidity >= 30 && humidity < 60){
-      return 'green';
+      return '#00b341';
     }
     if (humidity >= 60 && humidity <= 100){
-      return 'blue';
+      return '#00abfb';
     }
     return 'white';
   }
