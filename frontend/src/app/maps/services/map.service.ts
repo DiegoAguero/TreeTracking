@@ -27,14 +27,6 @@ export class MapService {
   });
 
   constructor(){
-    this.http.get('http://10.10.168.194:8080/sensor')
-    .pipe(
-      retry(2)
-    )
-    .subscribe({
-      next: (data: any) => console.log(data),
-      error: (err: any) => console.error
-    })
   }
 
 

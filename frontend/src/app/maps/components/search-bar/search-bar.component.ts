@@ -16,6 +16,20 @@ export class SearchBarComponent {
   #debounceTime?: NodeJS.Timeout;
   #placesSerive = inject(PlacesService);
   numberItems = input<number>(0);
+  public zones: Array<Record<string, string>> = [
+    {
+      title: 'Conform zone',
+      color: 'color: green;'
+    },
+    {
+      title: 'Warning zone',
+      color: 'color: yellow;'
+    },
+    {
+      title: 'Dangerous zone',
+      color: 'color: red;'
+    }
+  ];
 
   onQueryChange(query: string = '') {
 

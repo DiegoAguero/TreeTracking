@@ -26,3 +26,5 @@ replay_pid*
 #bd
 config.properties
 /backend/target/
+/node_modules
+
