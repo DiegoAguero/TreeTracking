@@ -1,0 +1,34 @@
+[33m8656709[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Fix cors policy
+[33mffde0aa[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m production
+[33mde017f2[m Delete enviroments
+[33md3c63c9[m Markerts
+[33m744077f[m erase comment
+[33mb112cab[m Merge
+[33m42a2114[m Erase comment
+[33m6dad840[m Add Filter by humidity
+[33m7945fe4[m Merge branch 'main' of https://github.com/DiegoAguero/Hackathon
+[33m51b6894[m Merge
+[33m3f7c867[m Erase comments
+[33m593070d[m merge
+[33m3621fea[m Fix connection error and filter sensor fire
+[33m89f764c[m Merge branch 'main' of https://github.com/DiegoAguero/Hackathon
+[33me8928a7[m Map loading
+[33m183e837[m Fix DTOs n DAOs, Complete endpoint sensor
+[33mc7703c5[m Add sensor servlet
+[33maa30723[m Add Gson to pom
+[33md5c2767[m DAO Fix
+[33m91a93a1[m fix ConnectionDAO
+[33mdc567ec[m Add DAO
+[33m815c6c3[m Merge
+[33m9b99227[m Add connection to database
+[33m7bcf26f[m Add DTO and DAO
+[33m9fbd7a5[m Merge branch 'main' of https://github.com/DiegoAguero/Hackathon
+[33m1e29275[m Backend creation file
+[33m4012b5f[m Delete dir
+[33m8f14cf4[m Merge branch 'main' of https://github.com/DiegoAguero/Hackathon
+[33m5074395[m Backend creation folder
+[33m774854e[m update gitignore java
+[33me9b1eea[m Merge branch 'main' of https://github.com/DiegoAguero/Hackathon
+[33m7e26601[m Creating gitignore
+[33m5e800c6[m First commit
+[33me9d1bce[m Initial commit

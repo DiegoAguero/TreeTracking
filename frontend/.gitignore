@@ -11,7 +11,7 @@
 /node_modules
 npm-debug.log
 yarn-error.log
-/proxy
+/proxy/node_modules
 
 # IDEs and editors
 .idea/
