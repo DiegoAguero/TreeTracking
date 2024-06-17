@@ -28,4 +28,4 @@ replay_pid*
 
 #bd
 config.properties
-/backend/target/
+/target/
