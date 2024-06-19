@@ -7,6 +7,8 @@ import { Zone } from '@maps/interfaces/places.interfaces';
 import { places } from '@maps/mock/places';
 import { typeSVG } from '@shared/svg/svg';
 import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Popup } from 'mapbox-gl';
+import { environment } from '@environments/environments';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Po
 export class MapService {
 
   // MOCK
-  #mockPlaces = signal <Zone[]>(places);
+  #zoneTree = signal<Zone[]>([]);
 
   // Whit Signals
   private mapSignal = signal<Map | undefined>(undefined);
@@ -26,7 +28,7 @@ export class MapService {
     return !!this.mapSignal();
   });
 
-  constructor(){
+  constructor() {
   }
 
   // No signals
@@ -37,14 +39,22 @@ export class MapService {
     return !!this.map;
   }
 
-  get allMarkers(){
+  get allMarkers() {
     return this.markers();
   }
 
   setMap(map: Map): void {
     this.map = map;
     this.mapSignal.set(map);
-    this.createMarkesFromPlacesMock();
+    this.http.get<Zone[]>(environment.URL_API_SENSOR)
+      .subscribe({
+        next: (zones: Zone[]) => {
+          this.#zoneTree.set(zones);
+          this.createMarkesFromPlacesMock();
+        },
+        error: (err) => this.#zoneTree.set(places),
+      });
+
   }
 
   flyTo(coords: LngLatLike) {
@@ -62,15 +72,15 @@ export class MapService {
   }
 
 
-  createMarkesFromPlacesMock(){
+  createMarkesFromPlacesMock() {
     if (!this.mapSignal()) throw Error("Mapa no inicializado");
     this.markers.update(marker => []);
     const newMarkers: Marker[] = [];
-    for (let { id, coords, isOnFire, description, humidity } of this.#mockPlaces()){
+    for (let { id, coords, isOnFire, description, humidity } of this.#zoneTree()) {
       let svg = typeSVG(humidity);
       // Comprobar el isOnFire
       const { coordX, coordY } = coords;
-      const popup:Popup = new Popup()
+      const popup: Popup = new Popup()
         .setHTML(`
           <div
             class="popup-marker w-56 rounded-lg grid gap-2 p-2"
@@ -101,7 +111,7 @@ export class MapService {
       ...newMarkers
     }));
 
-    if (this.#mockPlaces().length === 0) return;
+    if (this.#zoneTree().length === 0) return;
     // LIMITES DEL MAPA (Subir el scroll de los mapas)
     this.numberLocations.set(newMarkers.length);
     const bounds = new LngLatBounds();
@@ -112,15 +122,15 @@ export class MapService {
     });
   }
 
-  colorMarker(humidity: number): string{
+  colorMarker(humidity: number): string {
     // 0 - 30 yellow , 40 - 60 green , 60 - 100 lightblue
-    if (humidity >= 0 && humidity < 30){
+    if (humidity >= 0 && humidity < 30) {
       return '#ff4500';
     }
-    if (humidity >= 30 && humidity < 60){
+    if (humidity >= 30 && humidity < 60) {
       return '#00b341';
     }
-    if (humidity >= 60 && humidity <= 100){
+    if (humidity >= 60 && humidity <= 100) {
       return '#00abfb';
     }
     return 'white';
@@ -230,7 +240,7 @@ export class MapService {
     });
   }
 
-  deleteMarkers():void{
+  deleteMarkers():void {
     this.markers.set([]);
   }
 }
