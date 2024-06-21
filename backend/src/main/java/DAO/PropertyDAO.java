@@ -44,6 +44,7 @@ public class PropertyDAO {
                     properties.add(property);
                 }
             }
+            conn.close();
         } catch (SQLException ex) {
             properties = null;
         }
@@ -66,6 +67,7 @@ public class PropertyDAO {
                 if (rs.next()) {
                     property = fromResultSet(rs);
                 }
+                conn.close();
             }
         } catch (SQLException ex) {
             property = null;
@@ -85,6 +87,7 @@ public class PropertyDAO {
             stmt.setString(3, property.getDescription());
 
             rows = stmt.executeUpdate();
+            conn.close();
         } catch (SQLException ex) {
             rows = 0;
         }
@@ -107,6 +110,7 @@ public class PropertyDAO {
             stmt.setInt(4, property.getId_property());
 
             rows = stmt.executeUpdate();
+            conn.close();
         } catch (SQLException ex) {
             rows = 0;
         }
@@ -124,6 +128,7 @@ public class PropertyDAO {
             stmt = conn.prepareStatement(SQL_DELETE);
             stmt.setInt(1, property.getId_property());
             rows = stmt.executeUpdate();
+            conn.close();
         } catch (SQLException ex) {
             rows = 0;
         }
