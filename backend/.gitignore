@@ -26,6 +26,7 @@ replay_pid*
 #System files
 ./node_modules
 
-#bd
+#propios
 config.properties
 /target/
+.pem
