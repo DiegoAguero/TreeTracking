@@ -89,7 +89,7 @@ public class ConditionDAO {
         return condition;
     }
     
-    public List<ConditionDTO> selectByDate(int id_entry) throws SQLException {
+    public List<ConditionDTO> selectByEntry(EntryDTO entry) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -100,7 +100,7 @@ public class ConditionDAO {
             conn = ConnectionDAO.getConnection();
             if (conn != null) {
                 stmt = conn.prepareStatement(SQL_SELECT_BY_DATE);
-                stmt.setInt(1, id_entry);
+                stmt.setInt(1, entry.getId_entry());
                 rs = stmt.executeQuery();
                 while (rs.next()) {
                 condition = fromResultSet(rs);

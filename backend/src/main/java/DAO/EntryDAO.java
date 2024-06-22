@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ public class EntryDAO {
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM entries";
     private static final String SQL_SELECT = "SELECT * FROM entries WHERE id_entry=?";
+    private static final String SQL_SELECT_BY_DATE = "SELECT * FROM entries WHERE date=?";
     private static final String SQL_INSERT = "INSERT INTO entries(date) VALUES(?)";
     private static final String SQL_UPDATE = "UPDATE entries SET date=? WHERE id_entry = ?";
     private static final String SQL_DELETE = "DELETE FROM entries WHERE id_entry=?";
@@ -73,23 +75,55 @@ public class EntryDAO {
         }
         return entry;
     }
+    
+    public EntryDTO selectByDate(Date date) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        EntryDTO entry = null;
+
+        try {
+            conn = ConnectionDAO.getConnection();
+            if (conn != null) {
+                stmt = conn.prepareStatement(SQL_SELECT_BY_DATE);
+                stmt.setDate(1, date);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    entry = fromResultSet(rs);
+                }
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            entry = null;
+        }
+        return entry;
+    }
 
     public int insert(EntryDTO entry) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
-        int rows = 0;
+        int generatedId = 0;
         try {
             conn = ConnectionDAO.getConnection();
-            stmt = conn.prepareStatement(SQL_INSERT);
+            stmt = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
             stmt.setDate(1, entry.getDate());
-
-            rows = stmt.executeUpdate();
+            
+            stmt.executeUpdate();
+            
+            ResultSet generatedKeys = stmt.getGeneratedKeys();
+            generatedId = -1;
+            if(generatedKeys.next()){
+                generatedId = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Error genereating new id_entry");
+            }
+            
             conn.close();
         } catch (SQLException ex) {
-            rows = 0;
+            generatedId = 0;
         }
 
-        return rows;
+        return generatedId;
     }
 
     public int update(EntryDTO entry) throws SQLException {
