@@ -27,9 +27,14 @@ public class ConditionsToday extends HttpServlet {
         Date currentDate = Date.valueOf(LocalDate.now());
         try {
             List<ConditionDTO> conditionsToday = getConditionsForToday(currentDate);
-            String json = new Gson().toJson(conditionsToday);
-            response.getWriter().write(json);
-            
+            if (conditionsToday != null) {
+                String json = new Gson().toJson(conditionsToday);
+                response.getWriter().write(json);
+            } else {
+                response.getWriter().write("{}");
+                return;
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ConditionsToday.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -38,21 +43,24 @@ public class ConditionsToday extends HttpServlet {
     }
 
     private Optional<EntryDTO> entryToday(Date today) throws Exception {
-        List<EntryDTO> entries;
+        List<EntryDTO> entries = null;
         try {
             entries = new EntryDAO().selectAll();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConditionsToday.class.getName()).log(Level.SEVERE, "Database connection problem", ex);
+            throw new Exception("Failed to connect to the database");
+        }
+        if(entries !=null){
             for (EntryDTO entry : entries) {
                 if (entry.getDate().equals(today)) {
                     return Optional.of(entry);
                 }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(ConditionsToday.class.getName()).log(Level.SEVERE, "Database connection problem", ex);
-            throw new Exception("Failed to connect to the database");
         }
+
         return Optional.empty();
     }
-    
+
     protected List<ConditionDTO> getConditionsForToday(Date currentDate) throws SQLException, Exception {
         Optional<EntryDTO> entryToday = entryToday(currentDate);
         List<ConditionDTO> conditionsToday = null;
@@ -67,6 +75,9 @@ public class ConditionsToday extends HttpServlet {
             // Save data with new data from API and id_EntryNewDay
             if (id_EntryNewDay != 0) {
                 conditionsToday = new ConditionDAO().selectByEntry(entryNewDay);
+            } else {
+                //No data situation
+                conditionsToday = null;
             }
         }
 
