@@ -1,0 +1,67 @@
+package Controller;
+
+import DTO.ConditionDTO;
+import com.google.gson.Gson;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+@WebServlet(name = "ConditionsByFireDetected", urlPatterns = {"/conditions/fireDetected"})
+public class ConditionsByFireDetected extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            String value = request.getParameter("value");
+
+            boolean fireDetected;
+            if ("true".equalsIgnoreCase(value) || "1".equals(value)) {
+                fireDetected = true;
+            } else if ("false".equalsIgnoreCase(value) || "0".equals(value)) {
+                fireDetected = false;
+            } else {
+                fireDetected = false;
+            }
+
+            Date currentDate = Date.valueOf(LocalDate.now());
+            List<ConditionDTO> conditionsToday = new ConditionsToday().getConditionsForToday(currentDate);
+
+            if (conditionsToday != null) {
+                conditionsToday = conditionsToday.stream()
+                        .filter(c -> c.isFire_detected() == fireDetected)
+                        .collect(Collectors.toList());
+            } else {
+                response.getWriter().write("{}");
+                return;
+            }
+            
+            String json = new Gson().toJson(conditionsToday);
+            response.getWriter().write(json);
+
+        } catch (NumberFormatException ex) {
+            Logger.getLogger(ConditionsByFireDetected.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect(request.getContextPath() + "/conditions");
+            return;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConditionsByFireDetected.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect(request.getContextPath() + "/conditions");
+            return;
+        } catch (Exception ex) {
+            Logger.getLogger(ConditionsByFireDetected.class.getName()).log(Level.SEVERE, null, ex);
+            response.sendRedirect(request.getContextPath() + "/conditions");
+            return;
+        }
+    }
+}
