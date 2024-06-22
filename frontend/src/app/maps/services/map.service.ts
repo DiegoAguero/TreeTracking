@@ -3,11 +3,12 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { DirectionsApiClient } from '@maps/api/directionsApiClient';
 import { DirectionsResponse, Route } from '@maps/interfaces/directions.interface';
 import { Feature } from '@maps/interfaces/places.interface';
-import { Zone } from '@maps/interfaces/places.interfaces';
 import { places } from '@maps/mock/places';
 import { typeSVG } from '@shared/svg/svg';
 import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Popup } from 'mapbox-gl';
 import { environment } from '@environments/environments';
+import { Country } from '@maps/interfaces/country.interfaces';
+import { CONSTANTES } from '@utils/constantes';
 
 
 @Injectable({
@@ -15,8 +16,8 @@ import { environment } from '@environments/environments';
 })
 export class MapService {
 
-  // MOCK
-  #zoneTree = signal<Zone[]>([]);
+  // Zone
+  #zoneTree = signal<Country[]>([]);
 
   // Whit Signals
   private mapSignal = signal<Map | undefined>(undefined);
@@ -27,6 +28,8 @@ export class MapService {
   public isMapReadyComputed = computed(() => {
     return !!this.mapSignal();
   });
+
+  public zonesTreeComputed = computed(() => this.#zoneTree());
 
   constructor() {
   }
@@ -46,13 +49,19 @@ export class MapService {
   setMap(map: Map): void {
     this.map = map;
     this.mapSignal.set(map);
-    this.http.get<Zone[]>(environment.URL_API_SENSOR)
+    this.http.get<Country[]>(environment.URL_API_SENSOR)
       .subscribe({
-        next: (zones: Zone[]) => {
-          this.#zoneTree.set(zones);
-          this.createMarkesFromPlacesMock();
+        next: (zones: Country[]) => {
+          if( zones ){
+            this.#zoneTree.set(zones);
+            return;
+          }
+          this.#zoneTree.set(places);
         },
-        error: (err) => this.#zoneTree.set(places),
+        error: (err) =>{
+          this.#zoneTree.set(places)
+        },
+        complete: () => this.numberLocations.set( this.#zoneTree().length > 0 ? this.#zoneTree().length : places.length )
       });
 
   }
@@ -72,69 +81,6 @@ export class MapService {
   }
 
 
-  createMarkesFromPlacesMock() {
-    if (!this.mapSignal()) throw Error("Mapa no inicializado");
-    this.markers.update(marker => []);
-    const newMarkers: Marker[] = [];
-    for (let { id, coords, isOnFire, description, humidity } of this.#zoneTree()) {
-      let svg = typeSVG(humidity);
-      // Comprobar el isOnFire
-      const { coordX, coordY } = coords;
-      const popup: Popup = new Popup()
-        .setHTML(`
-          <div
-            class="popup-marker w-56 rounded-lg grid gap-2 p-2"
-            data-id="${id}"
-          >
-            <div class="flex justify-end">
-              ${svg}
-              <h6 class="font-bold text-end" style="color: ${this.colorMarker(humidity)}">${humidity}%</h6>
-            </div>
-            <span>${description}</span>
-            <button class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-1 py-1 text-center me-2 mb-2">Information</button>
-          </div>
-        `);
-
-      const options: MarkerOptions = {
-        draggable: false,
-        color: this.colorMarker(humidity)
-      }
-      const newMarker = new Marker(options)
-        .setLngLat([coordY, coordX])
-        .setPopup(popup)
-        .addTo(this.mapSignal()!);
-      newMarkers.push(newMarker)
-    }
-
-    this.markers.update(markers => ({
-      markers,
-      ...newMarkers
-    }));
-
-    if (this.#zoneTree().length === 0) return;
-    // LIMITES DEL MAPA (Subir el scroll de los mapas)
-    this.numberLocations.set(newMarkers.length);
-    const bounds = new LngLatBounds();
-    newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
-    // bounds.extend(userLocation);
-    this.mapSignal()!.fitBounds(bounds, {
-      padding: 200
-    });
-  }
-
-  colorMarker(humidity: number): string {
-    // 0 - 30 yellow , 40 - 60 green , 60 - 100 lightblue
-    if (humidity >= 0 && humidity < 30) {
-      return '#ff4500';
-    }
-    if (humidity >= 30 && humidity < 60) {
-      return '#00b341';
-    }
-    if (humidity >= 60 && humidity <= 100) {
-      return '#00abfb';
-    }
-    return 'white';
-  }
 
   createMarkersFromPlaces(places: Feature[], userLocation: [number, number]) {
     // Crear instancias del erro para saber que error es
