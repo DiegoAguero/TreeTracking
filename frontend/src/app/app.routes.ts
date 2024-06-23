@@ -2,6 +2,12 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'home',
+    title: 'Tree Tracking',
+    loadComponent: () => import('@routes/home/home-page.component'),
+    children: []
+  },
+  {
     path: 'table',
     title: 'Tabla',
     loadComponent: () => import('@routes/zones/components/table/table.component'),
@@ -25,6 +31,6 @@ export const routes: Routes = [
     path: '',
     title: '',
     pathMatch: 'full',
-    redirectTo: 'table'
+    redirectTo: 'home'
   }
 ];

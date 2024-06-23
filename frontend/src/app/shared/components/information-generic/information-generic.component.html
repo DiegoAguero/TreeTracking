@@ -1,0 +1,40 @@
+<div class="grid place-items-center">
+  <div class="max-w-lg">
+    <span
+      class="bg-green-100 border-green-200 border text-green-600 -ml-px rounded-full text-xs font-medium px-3 py-1 ">
+      Información simplificada
+    </span>
+    <h3 class="text-2xl font-medium mt-4 [text-wrap:balance]">
+      Experimente el máximo impulso en sostenibilidad con nuestra plataforma intuitiva y precisa.
+    </h3>
+    <p class="mt-4 text-slate-600 [text-wrap:balance]">
+      Potencie sus proyectos de manera sostenible con Tree Tracking. Maximice la eficiencia empresarial y lleve su
+      compromiso con el medio ambiente a nuevas alturas.
+    </p>
+    <ul class="grid mt-6 text-left gap-y-4">
+      @for (info of inforGeneral; track $index)
+      {
+        <li [class]="info.classLi">
+          <app-check-circle [class]="info.classLi" [titleSpan]="info.textSvg" [classSvg]="info.svgClass" />
+        </li>
+      }
+    </ul>
+
+    <div class="flex items-center gap-4 mt-6">
+      <a
+        class="rounded-full cursor-pointer text-center transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 focus-visible:outline-none focus-visible:shadow-outline-green px-4 py-2 text-sm bg-green-600 text-white hover:bg-green-800 inline-flex items-center group gap-px">
+        <span>DEMO</span>
+        <svg viewBox="0 0 20 20" fill="currentColor"
+          class="w-4 h-4 mt-px group-hover:translate-x-1 transition-transform">
+          <path fill-rule="evenodd"
+            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+            clip-rule="evenodd">
+          </path>
+        </svg>
+      </a>
+      <a
+        class="text-sm px-2 transition py-1 cursor-pointer text-slate-600 hover:text-green-600 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500 focus-visible:outline-none focus-visible:shadow-outline-green rounded-full">Contáctanos
+      </a>
+    </div>
+  </div>
+</div>
