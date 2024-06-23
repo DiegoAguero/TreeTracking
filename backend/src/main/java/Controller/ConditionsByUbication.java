@@ -2,7 +2,6 @@ package Controller;
 
 import DTO.ConditionDTO;
 import Utilities.WeatherConsults;
-
 import com.google.gson.Gson;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -18,8 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@WebServlet(name = "ConditionsByHumidity", urlPatterns = {"/conditions/humidity"})
-public class ConditionsByHumidity extends HttpServlet {
+@WebServlet(name = "ConditionsByUbication", urlPatterns = {"/conditions/ubication"})
+public class ConditionsByUbication extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -31,33 +30,32 @@ public class ConditionsByHumidity extends HttpServlet {
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
         try {
-            float minHumidity = Float.parseFloat(request.getParameter("min"));
-            float maxHumidity = Float.parseFloat(request.getParameter("max"));
+            int id_property = Integer.parseInt(request.getParameter("id"));
+
             Date currentDate = Date.valueOf(LocalDate.now());
             List<ConditionDTO> conditionsToday = new WeatherConsults().getConditionsForToday(currentDate);
 
             if (conditionsToday != null) {
                 conditionsToday = conditionsToday.stream()
-                        .filter(c -> c.getHumidity() >= minHumidity && c.getHumidity() <= maxHumidity)
+                        .filter(c -> c.getProperty().getId_property() == id_property)
                         .collect(Collectors.toList());
             } else {
                 response.getWriter().write("{}");
                 return;
             }
-
             String json = new Gson().toJson(conditionsToday);
             response.getWriter().write(json);
 
         } catch (NumberFormatException ex) {
-            Logger.getLogger(ConditionsByHumidity.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect(request.getContextPath() + "/conditions");
             return;
         } catch (SQLException ex) {
-            Logger.getLogger(ConditionsByHumidity.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect(request.getContextPath() + "/conditions");
             return;
         } catch (Exception ex) {
-            Logger.getLogger(ConditionsByHumidity.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
             response.sendRedirect(request.getContextPath() + "/conditions");
             return;
         }

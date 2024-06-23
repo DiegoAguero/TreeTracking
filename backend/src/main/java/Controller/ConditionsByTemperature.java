@@ -25,6 +25,11 @@ public class ConditionsByTemperature extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
         try {
             float minTemperature = Float.parseFloat(request.getParameter("min"));
             float maxTemperature = Float.parseFloat(request.getParameter("max"));
@@ -56,5 +61,17 @@ public class ConditionsByTemperature extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/conditions");
             return;
         }
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 }
