@@ -21,6 +21,7 @@ public class ConnectionDAO {
     private static final String DB_URL = properties.getProperty("JDBC_URL");
     private static final String DB_USER = properties.getProperty("JDBC_USER");
     private static final String DB_PASSWORD = properties.getProperty("JDBC_PASS");
+    private static final String WEATHER_API_KEY = properties.getProperty("WEATHER_API_KEY");
 
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
@@ -34,4 +35,9 @@ public class ConnectionDAO {
         }
         return conn;
     }
+
+    public static String getWeatherApiKey(){
+        return WEATHER_API_KEY;
+    }
+
 }

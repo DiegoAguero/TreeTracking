@@ -1,6 +1,8 @@
 package Controller;
 
 import DTO.ConditionDTO;
+import Utilities.WeatherConsults;
+
 import com.google.gson.Gson;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -36,7 +38,7 @@ public class ConditionsByFireDetected extends HttpServlet {
             }
 
             Date currentDate = Date.valueOf(LocalDate.now());
-            List<ConditionDTO> conditionsToday = new ConditionsToday().getConditionsForToday(currentDate);
+            List<ConditionDTO> conditionsToday = new WeatherConsults().getConditionsForToday(currentDate);
 
             if (conditionsToday != null) {
                 conditionsToday = conditionsToday.stream()

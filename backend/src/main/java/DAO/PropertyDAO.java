@@ -33,7 +33,6 @@ public class PropertyDAO {
         ResultSet rs = null;
         PropertyDTO property = null;
         List<PropertyDTO> properties = new ArrayList<PropertyDTO>();
-
         try {
             conn = ConnectionDAO.getConnection();
             stmt = conn.prepareStatement(SQL_SELECT_ALL);

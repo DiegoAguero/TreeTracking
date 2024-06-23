@@ -6,14 +6,14 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import DAO.*;
 import DTO.*;
+import Utilities.WeatherConsults;
+
 import com.google.gson.Gson;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +26,8 @@ public class ConditionsToday extends HttpServlet {
 
         Date currentDate = Date.valueOf(LocalDate.now());
         try {
-            List<ConditionDTO> conditionsToday = getConditionsForToday(currentDate);
+            WeatherConsults weatherConsults = new WeatherConsults();
+            List<ConditionDTO> conditionsToday = weatherConsults.getConditionsForToday(currentDate);
             if (conditionsToday != null) {
                 String json = new Gson().toJson(conditionsToday);
                 response.getWriter().write(json);
@@ -42,45 +43,5 @@ public class ConditionsToday extends HttpServlet {
         }
     }
 
-    private Optional<EntryDTO> entryToday(Date today) throws Exception {
-        List<EntryDTO> entries = null;
-        try {
-            entries = new EntryDAO().selectAll();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConditionsToday.class.getName()).log(Level.SEVERE, "Database connection problem", ex);
-            throw new Exception("Failed to connect to the database");
-        }
-        if(entries !=null){
-            for (EntryDTO entry : entries) {
-                if (entry.getDate().equals(today)) {
-                    return Optional.of(entry);
-                }
-            }
-        }
 
-        return Optional.empty();
-    }
-
-    protected List<ConditionDTO> getConditionsForToday(Date currentDate) throws SQLException, Exception {
-        Optional<EntryDTO> entryToday = entryToday(currentDate);
-        List<ConditionDTO> conditionsToday = null;
-
-        if (entryToday.isPresent()) {
-            conditionsToday = new ConditionDAO().selectByEntry(entryToday.get());
-        } else {
-            EntryDTO entryNewDay = new EntryDTO(currentDate);
-            int id_EntryNewDay = new EntryDAO().insert(entryNewDay);
-
-            // Call API with today's date
-            // Save data with new data from API and id_EntryNewDay
-            if (id_EntryNewDay != 0) {
-                conditionsToday = new ConditionDAO().selectByEntry(entryNewDay);
-            } else {
-                //No data situation
-                conditionsToday = null;
-            }
-        }
-
-        return conditionsToday;
-    }
 }
