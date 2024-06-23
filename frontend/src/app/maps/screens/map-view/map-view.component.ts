@@ -1,9 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
-import { Country } from '@maps/interfaces/country.interfaces';
+import { AfterViewInit, Component, ViewContainerRef, ElementRef, ViewChild, computed, effect, inject, signal } from '@angular/core';
+import { Country } from '@core/interfaces/country.interfaces';
+import { CoreService } from '@core/services/core.service';
+
 import { MapService } from '@maps/services/map.service';
 import { PlacesService } from '@maps/services/places.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
+import { PopupComponent } from '@shared/components/popup/popup.component';
+import { IPopup } from '@shared/interfaces/popup.interface';
+
 import { typeSVG } from '@shared/svg/svg';
 import { CONSTANTES } from '@utils/constantes';
 import { Map, Popup, Marker, MarkerOptions, LngLatBounds } from 'mapbox-gl';
@@ -11,27 +16,30 @@ import { Map, Popup, Marker, MarkerOptions, LngLatBounds } from 'mapbox-gl';
 @Component({
   selector: 'app-map-view',
   standalone: true,
-  imports: [CommonModule, LoadingComponent],
+  imports: [CommonModule, LoadingComponent, PopupComponent],
   templateUrl: './map-view.component.html',
   styleUrl: './map-view.component.css'
 })
 export class MapViewComponent implements AfterViewInit {
 
-  private placesService = inject(PlacesService);
+  private coreService = inject(CoreService);
   private mapService = inject(MapService);
   private mapSignal = signal<Map | undefined>(undefined);
   private markers = signal<Marker[]>([]);
 
+  /** Injectors **/
+  private viewContainerRef = inject(ViewContainerRef);
+
 
   @ViewChild('mapDiv')
   public mapDivElement!: ElementRef;
-  public isReadyUserLocationComputed = computed(() => this.placesService.isUserLocationReadyComputed() );
+  public isReadyUserLocationComputed = computed(() => this.coreService.userLocationComputed() );
 
   constructor() {
     effect(() => {
       if (this.mapService.isMapReadyComputed()) {
-        if (this.mapService.zonesTreeComputed().length > 0){
-          this.addPopupToMap(this.mapService.zonesTreeComputed());
+        if (this.coreService.zonesTreeComputed().length > 0){
+          this.addPopupToMap(this.coreService.zonesTreeComputed());
         }
       }
     }, { allowSignalWrites: true }); // Enable signal writes
@@ -39,13 +47,12 @@ export class MapViewComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    if (!this.placesService.userLocationComputed()) throw new Error('Error loacation');
-
+    if (!this.coreService.userLocationComputed()) throw new Error('Error loacation');
     this.mapSignal.set(new Map({
       container: this.mapDivElement.nativeElement,
       style: 'mapbox://styles/mapbox/standard',
       // style: 'mapbox://styles/mapbox/light-v11',
-      center: this.placesService.userLocationComputed() ?? [-74.00597, 40.71427],
+      center: this.coreService.userLocationComputed() ?? [2.15899, 41.38879],
       zoom: 14, // starting zoom
     }));
 
@@ -57,38 +64,46 @@ export class MapViewComponent implements AfterViewInit {
       `);
 
     if( !this.mapSignal() ) return;
-  
+
     new Marker({ color: 'red' })
-      .setLngLat(this.placesService.userLocationComputed() ?? [-74.00597, 40.71427]) // New York
+      .setLngLat(this.coreService.userLocationComputed() ?? [2.15899, 41.38879]) // Barcelona
       .setPopup(popup)
       .addTo(this.mapSignal()!);
 
 
-    // Encapsular
+    // Dowload map.
     this.mapService.setMap(this.mapSignal()!);
 
   }
 
   addPopupToMap( countries:Country[]):void{
     const newMarkers: Marker[] = [];
-    for (let { id_condition, property, fire_detected, humidity, temperature } of countries) {
+    for (let country of countries) {
+
+      let { property, humidity } = country;
       let svg = typeSVG(humidity);
       // Comprobar el isOnFire
-      const { id_property, coord_x, coord_y, description } = property;
+      const { coord_x, coord_y } = property;
+
+      let colorSvgClimate = CONSTANTES.COLOR_CLIMATE.colour(country.temperature)
+
+      const popupNode = document.createElement('div');
+
+      const view = this.viewContainerRef.createComponent(PopupComponent);
+      /** Data for Popup **/
+      const IPopup: IPopup = {
+        country: country,
+        svg: svg,
+        color: this.colorMarker(humidity),
+        colorSvgClimate: colorSvgClimate
+      };
+
+      view.instance.IPopup = IPopup;
+
+      popupNode.appendChild(view.location.nativeElement);
+
       const popup: Popup = new Popup()
-        .setHTML(`
-          <div
-            class="popup-marker w-56 rounded-lg grid gap-2 p-2"
-            data-id="${id_property}"
-          >
-            <div class="flex justify-end">
-              ${svg}
-              <h6 class="font-bold text-end" style="color: ${this.colorMarker(humidity)}">${humidity}%</h6>
-            </div>
-            <span>${description}</span>
-            <button (click)="showPlace(${id_property})" class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-1 py-1 text-center me-2 mb-2">Information</button>
-          </div>
-        `);
+        .setDOMContent(popupNode);
 
       const options: MarkerOptions = {
         draggable: false,
@@ -104,7 +119,7 @@ export class MapViewComponent implements AfterViewInit {
       markers,
       ...newMarkers
     }));
-  
+
 
     // const bounds = new LngLatBounds();
     // newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
@@ -127,10 +142,6 @@ export class MapViewComponent implements AfterViewInit {
       return CONSTANTES.COLORS.BLUE;
     }
     return 'white';
-  }
-
-  showPlace(id: string) {
-    console.log(id);
   }
 
 }

@@ -1,0 +1,5 @@
+@if(dataService().length > 0){
+  <app-table-generic class="w-full flex place-content-center border-t-2" title="Table Zones" [column]="colums" [dataSource]="dataService()" />
+}@else{
+  <app-loading class="grid place-items-center w-full h-screen" />
+}

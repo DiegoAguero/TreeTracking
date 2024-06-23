@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, input, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { ZonesInformation } from '@maps/interfaces/zonesInformation.interface';
 import { CONSTANTES } from '@utils/constantes';
 
@@ -12,8 +12,6 @@ import { CONSTANTES } from '@utils/constantes';
 })
 export class InformationComponent {
 
-  @ViewChild('popup')
-    private popup!:ElementRef;
   numberItems = input<number>(0);
   isClosePopup = signal<boolean>(false);
 

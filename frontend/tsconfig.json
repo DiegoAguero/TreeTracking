@@ -1,4 +1,4 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
+
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -26,7 +26,9 @@
       "@environments/*": [
         "./src/environments/*"
       ],
-      "@utils/*": ["./src/app/utils/*"]
+      "@utils/*": ["./src/app/utils/*"],
+      "@core/*": ["./src/app/core/*"],
+      "@routes/*": ["./src/app/routes/*"],
     },
     "lib": [
       "ES2022",
