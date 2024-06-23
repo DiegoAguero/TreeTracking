@@ -24,6 +24,11 @@ public class ConditionsToday extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
         Date currentDate = Date.valueOf(LocalDate.now());
         try {
             List<ConditionDTO> conditionsToday = getConditionsForToday(currentDate);
@@ -42,6 +47,18 @@ public class ConditionsToday extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
     private Optional<EntryDTO> entryToday(Date today) throws Exception {
         List<EntryDTO> entries = null;
         try {
@@ -50,7 +67,7 @@ public class ConditionsToday extends HttpServlet {
             Logger.getLogger(ConditionsToday.class.getName()).log(Level.SEVERE, "Database connection problem", ex);
             throw new Exception("Failed to connect to the database");
         }
-        if(entries !=null){
+        if (entries != null) {
             for (EntryDTO entry : entries) {
                 if (entry.getDate().equals(today)) {
                     return Optional.of(entry);
