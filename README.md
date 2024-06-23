@@ -4,7 +4,7 @@ TreeTracking is a project that took place on a Fundación Esplai hackathon durin
 
 ## Installation
 
-Install this project going to the frontend route and using:
+Install the dependencies of this project going to the frontend route and using:
 ```bash
   cd frontend/
   npm i
