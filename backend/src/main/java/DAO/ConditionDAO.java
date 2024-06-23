@@ -11,6 +11,10 @@ import java.util.List;
 public class ConditionDAO {
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM conditions";
+    private static final String SQL_SELECT_INTERVAL_DAYS_BY_PROPERTY
+            = "SELECT * FROM conditions c JOIN entries e ON e.id_entry=c.id_entry "
+            + "WHERE c.id_property=? AND e.DATE > DATE_SUB(CURDATE(), INTERVAL ? DAY)"
+            + "ORDER BY e.date DESC";
     private static final String SQL_SELECT = "SELECT * FROM conditions WHERE id_condition=?";
     private static final String SQL_SELECT_BY_DATE = "SELECT * FROM conditions WHERE id_entry=?";
     private static final String SQL_INSERT = "INSERT INTO conditions(humidity, fire_detected, temperature, id_entry, id_property) VALUES(?, ?, ?, ?, ?)";
@@ -65,6 +69,33 @@ public class ConditionDAO {
         return conditions;
     }
 
+    public List<ConditionDTO> selectIntervalByProperty(int id_property, int days) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        ConditionDTO condition = null;
+        List<ConditionDTO> conditions = new ArrayList<ConditionDTO>();
+
+        try {
+            conn = ConnectionDAO.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_INTERVAL_DAYS_BY_PROPERTY);
+            stmt.setInt(1, id_property);
+            stmt.setInt(2, days);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                condition = fromResultSet(rs);
+                if (condition != null) {
+                    conditions.add(condition);
+                }
+            }
+            conn.close();
+        } catch (SQLException ex) {
+            conditions = null;
+        }
+
+        return conditions;
+    }
+
     public ConditionDTO select(int id_condition) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -87,7 +118,7 @@ public class ConditionDAO {
         }
         return condition;
     }
-    
+
     public List<ConditionDTO> selectByEntry(EntryDTO entry) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -102,11 +133,11 @@ public class ConditionDAO {
                 stmt.setInt(1, entry.getId_entry());
                 rs = stmt.executeQuery();
                 while (rs.next()) {
-                condition = fromResultSet(rs);
-                if (condition != null) {
-                    conditions.add(condition);
+                    condition = fromResultSet(rs);
+                    if (condition != null) {
+                        conditions.add(condition);
+                    }
                 }
-            }
                 conn.close();
             }
         } catch (SQLException ex) {

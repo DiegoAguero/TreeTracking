@@ -45,7 +45,7 @@ public class EntryDTO {
     public String toString() {
         return 
                 String.format("Entry: \n")+
-                String.format("Date: %t\n",this.getDate());
+                String.format("Date: %tF\n",this.getDate());
     }
     
     
