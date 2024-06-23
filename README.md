@@ -15,6 +15,12 @@ to install all the dependencies.
 
 To run this project, you will need to add the following environment variables to your .properties file in the backend route:
 
+```bash
+cd backend/src/main/resouces
+```
+
+With the following variables:
+
 `JDBC_URL`: Used to set-up the database where this project is running for.
 
 `JDBC_USER`: User of the database (Our example is MySQL Workbench).
