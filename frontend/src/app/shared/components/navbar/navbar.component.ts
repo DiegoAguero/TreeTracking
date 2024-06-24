@@ -32,7 +32,7 @@ export class NavbarComponent {
   }
 
   showHideNav(el: HTMLDivElement){
-    if( el.classList.contains('hidden-nav') ){
+    if( el.classList.contains('hidden') ){
       el.animate([
           { height: '0px', opacity: 0 },
           { height: 'auto', opacity: 1 }
@@ -41,7 +41,7 @@ export class NavbarComponent {
           easing: 'ease-out',
           fill: 'forwards'
         }).onfinish = () => {
-          el.classList.remove('hidden-nav');
+          el.classList.remove('hidden');
         }
     }
     else{
@@ -53,7 +53,7 @@ export class NavbarComponent {
         easing: 'ease-in',
         fill: 'forwards'
       }).onfinish = () => {
-        el.classList.add('hidden-nav');
+        el.classList.add('hidden');
       };
     }
   }
