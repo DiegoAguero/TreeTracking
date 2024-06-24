@@ -1,6 +1,6 @@
 
 
-<div class="popup-marker w-56 rounded-lg grid gap-2 p-2 m-0">
+<div class="popup-marker rounded-lg grid gap-2 p-2 m-0">
   <div class="flex">
     <app-thermometer [colorSvg]="svgClimateColor()" />
     <h6 [style.color]="svgClimateColor()">{{ country()?.temperature }}</h6>
@@ -10,6 +10,6 @@
   </div>
   <span>{{ country()?.property?.description }}</span>
   <button (click)="showPlace( country()?.property?.id_property )"
-    class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-1 py-1 text-center me-2 mb-2">Information</button>
+    class="text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-1 py-1 text-center">Information</button>
 </div>
 

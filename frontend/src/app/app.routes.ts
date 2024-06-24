@@ -17,8 +17,7 @@ export const routes: Routes = [
   {
     path: 'map',
     title: 'Mapa',
-    loadComponent: () => import('@maps/map-screen.component'), // Delete lazyloading
-    // component: MapScreenComponent
+    loadComponent: () => import('@maps/map-screen.component'),
     children: []
   },
   {
@@ -29,6 +28,12 @@ export const routes: Routes = [
   },
   {
     path: '',
+    title: '',
+    pathMatch: 'full',
+    redirectTo: 'home'
+  },
+  {
+    path: '**',
     title: '',
     pathMatch: 'full',
     redirectTo: 'home'

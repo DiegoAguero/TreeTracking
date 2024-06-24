@@ -14,6 +14,7 @@ export class CoreService {
   private userLocation = signal<[number, number] | undefined>(undefined);
   public userLocationComputed = computed(() => this.userLocation());
   public numberLocations = computed(() => this.#zoneTree().length);
+  public isVisibleMap = signal<boolean>(false);
 
   constructor() {
     this.getUserLocation()
@@ -23,6 +24,15 @@ export class CoreService {
       .catch((error) =>{
         // Managament error
       });
+  }
+
+  /**
+   *
+   * @param show boolean
+   * Show/hide the map
+   */
+  toggleMapDiv(show: boolean) {
+    this.isVisibleMap.set( show );
   }
 
   public async getUserLocation(): Promise<[number, number]> {

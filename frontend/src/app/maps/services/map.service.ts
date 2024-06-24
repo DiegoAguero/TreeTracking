@@ -12,7 +12,7 @@ import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker } from 'mapbox-gl'
 export class MapService {
 
   // Whit Signals
-  private mapSignal = signal<Map | undefined>(undefined);
+  public mapSignal = signal<Map | undefined>(undefined);
   private directionsApi = inject(DirectionsApiClient);
 
   public isMapReadyComputed = computed(() => {
