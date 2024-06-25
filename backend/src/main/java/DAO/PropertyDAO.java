@@ -21,8 +21,10 @@ public class PropertyDAO {
         double coord_x = rs.getDouble("coord_x");
         double coord_y = rs.getDouble("coord_y");
         String description = rs.getString("description");
+        String locality = rs.getString("locality");
+        String country = rs.getString("country");
         
-        PropertyDTO property = new PropertyDTO(id_property,coord_x,coord_y,description);
+        PropertyDTO property = new PropertyDTO(id_property,coord_x,coord_y,description,locality,country);
         
         return property;
     }
