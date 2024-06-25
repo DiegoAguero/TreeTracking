@@ -15,8 +15,6 @@ export class CorporateLogoComponent {
   @Input({})
   public srcImage:string = this.#imgDefault;
 
-
-
   /** Input signal  */
   public srcInputSignal = input<string>(this.#imgDefault, { alias: 'image' });
   /** Alt is required */

@@ -25,6 +25,15 @@
   transition: .2s linear;
 }
 .popup-marker{
-  margin: 1rem 0 0 0;
+  margin: 0;
 }
+
+.map-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
 

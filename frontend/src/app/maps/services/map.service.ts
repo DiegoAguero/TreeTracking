@@ -2,13 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { DirectionsApiClient } from '@maps/api/directionsApiClient';
 import { DirectionsResponse, Route } from '@maps/interfaces/directions.interface';
-import { Feature } from '@maps/interfaces/places.interface';
-import { places } from '@maps/mock/places';
-import { typeSVG } from '@shared/svg/svg';
-import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker, MarkerOptions, Popup } from 'mapbox-gl';
-import { environment } from '@environments/environments';
-import { Country } from '@maps/interfaces/country.interfaces';
-import { CONSTANTES } from '@utils/constantes';
+import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker } from 'mapbox-gl';
+
 
 
 @Injectable({
@@ -16,23 +11,13 @@ import { CONSTANTES } from '@utils/constantes';
 })
 export class MapService {
 
-  // Zone
-  #zoneTree = signal<Country[]>([]);
-
   // Whit Signals
-  private mapSignal = signal<Map | undefined>(undefined);
-  private markers = signal<Marker[]>([]);
+  public mapSignal = signal<Map | undefined>(undefined);
   private directionsApi = inject(DirectionsApiClient);
-  private http = inject(HttpClient);
 
   public isMapReadyComputed = computed(() => {
     return !!this.mapSignal();
   });
-
-  public zonesTreeComputed = computed(() => this.#zoneTree());
-
-  constructor() {
-  }
 
   // No signals
   private map?: Map;
@@ -42,28 +27,9 @@ export class MapService {
     return !!this.map;
   }
 
-  get allMarkers() {
-    return this.markers();
-  }
-
   setMap(map: Map): void {
     this.map = map;
     this.mapSignal.set(map);
-    this.http.get<Country[]>(environment.URL_API_SENSOR)
-      .subscribe({
-        next: (zones: Country[]) => {
-          if( zones ){
-            this.#zoneTree.set(zones);
-            return;
-          }
-          this.#zoneTree.set(places);
-        },
-        error: (err) =>{
-          this.#zoneTree.set(places)
-        },
-        complete: () => this.numberLocations.set( this.#zoneTree().length > 0 ? this.#zoneTree().length : places.length )
-      });
-
   }
 
   flyTo(coords: LngLatLike) {
@@ -82,48 +48,48 @@ export class MapService {
 
 
 
-  createMarkersFromPlaces(places: Feature[], userLocation: [number, number]) {
-    // Crear instancias del erro para saber que error es
-    if (!this.mapSignal()) throw Error("Mapa no inicializado");
-    this.markers.update(marker => []);
+  // createMarkersFromPlaces(places: Feature[], userLocation: [number, number]) {
+  //   // Crear instancias del erro para saber que error es
+  //   if (!this.mapSignal()) throw Error("Mapa no inicializado");
+  //   this.markers.update(marker => []);
 
-    const newMarkers: Marker[] = [];
+  //   const newMarkers: Marker[] = [];
 
-    for (const place of places) {
+  //   for (const place of places) {
 
-      const [lng, lat] = place.center;
+  //     const [lng, lat] = place.center;
 
-      const popup = new Popup()
-        .setHTML(`
-          <h6>${place.text_es}</h6>
-          <span>${place.place_name}</span>
-        `);
+  //     const popup = new Popup()
+  //       .setHTML(`
+  //         <h6>${place.text_es}</h6>
+  //         <span>${place.place_name}</span>
+  //       `);
 
-      const newMarker = new Marker()
-        .setLngLat([lng, lat])
-        .setPopup(popup)
-        .addTo(this.mapSignal()!);
+  //     const newMarker = new Marker()
+  //       .setLngLat([lng, lat])
+  //       .setPopup(popup)
+  //       .addTo(this.mapSignal()!);
 
-      newMarkers.push(newMarker)
-    }
+  //     newMarkers.push(newMarker)
+  //   }
 
-    this.markers.update(markers => ({
-      markers,
-      ...newMarkers
-    }));
+  //   this.markers.update(markers => ({
+  //     markers,
+  //     ...newMarkers
+  //   }));
 
-    if (places.length === 0) return;
-    // LIMITES DEL MAPA (Subir el scroll de los mapas)
+  //   if (places.length === 0) return;
+  //   // LIMITES DEL MAPA (Subir el scroll de los mapas)
 
-    const bounds = new LngLatBounds();
-    newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
-    bounds.extend(userLocation);
+  //   const bounds = new LngLatBounds();
+  //   newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
+  //   bounds.extend(userLocation);
 
-    this.mapSignal()!.fitBounds(bounds, {
-      padding: 200
-    });
+  //   this.mapSignal()!.fitBounds(bounds, {
+  //     padding: 200
+  //   });
 
-  }
+  // }
 
   getRouteBetweenPoints(start: [number, number], end: [number, number]) {
     this.directionsApi.get<DirectionsResponse>(`/${start.join(',')};${end.join(',')}`)
@@ -184,9 +150,5 @@ export class MapService {
         'line-width': 4
       }
     });
-  }
-
-  deleteMarkers():void {
-    this.markers.set([]);
   }
 }

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, computed, inject, signal } from '@angular/core';
+import { CoreService } from '@core/services/core.service';
 import { Feature } from '@maps/interfaces/places.interface';
 import { MapService } from '@maps/services/map.service';
 import { PlacesService } from '@maps/services/places.service';
@@ -16,6 +17,7 @@ export class SearchResultsComponent {
 
   public selectedId = signal<string>('');
   #placesSerive = inject(PlacesService);
+  #coreService = inject(CoreService);
   #mapService = inject(MapService);
   public isLoadingPLacesComputed = computed(() => this.#placesSerive.isLoadingPlaces());
   public placesComputed = computed(() => this.#placesSerive.placesSignal());
@@ -29,12 +31,13 @@ export class SearchResultsComponent {
 
   getDirections(place: Feature) {
 
-    if( !this.#placesSerive.userLocationComputed() ) throw Error('Not found user location');
+    if( !this.#coreService.userLocationComputed() ) throw Error('Not found user location');
 
     this.#placesSerive.deletePlaces();
 
-    const start = this.#placesSerive.userLocationComputed()!;
+    const start = this.#coreService.userLocationComputed()!;
     const end = place.center as [number, number];
+
 
     this.#mapService.getRouteBetweenPoints( start, end );
 

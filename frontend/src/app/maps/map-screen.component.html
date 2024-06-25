@@ -3,7 +3,7 @@
 }@else {
   <app-map-view />
   <shared-btn-my-location btn-text="My Location" />
-  <maps-search-bar />
-  <shared-information [numberItems]="this.mapService.numberLocations()" />
+  <maps-search-bar class="w-full grid grid-cols-1 place-items-center" />
+  <shared-information [numberItems]="this.coreService.numberLocations()" />
 }
 <shared-corporate-logo altImage="Logo Angular" />

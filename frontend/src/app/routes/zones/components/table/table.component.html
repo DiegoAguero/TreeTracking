@@ -1,0 +1,11 @@
+<div class="table-background relative w-full h-screen overflow-hidden">
+  <div class="absolute inset-0 bg-cover bg-center blur-background"></div>
+  <div class="relative z-10">
+    @if(dataService().length > 0) {
+      <app-table-generic class="w-full flex place-content-center border-t-2" title="Estado de la vegetación" [column]="colums"
+      [dataSource]="dataService()" />
+    } @else {
+      <app-loading class="grid place-items-center w-full h-screen" />
+    }
+  </div>
+</div>

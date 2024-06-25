@@ -34,16 +34,17 @@ public class ConditionsByUbication extends HttpServlet {
 
             Date currentDate = Date.valueOf(LocalDate.now());
             List<ConditionDTO> conditionsToday = new WeatherConsults().getConditionsForToday(currentDate);
-
+            ConditionDTO condition = null;
             if (conditionsToday != null) {
                 conditionsToday = conditionsToday.stream()
                         .filter(c -> c.getProperty().getId_property() == id_property)
                         .collect(Collectors.toList());
+                condition = conditionsToday.get(0);
             } else {
                 response.getWriter().write("{}");
                 return;
             }
-            String json = new Gson().toJson(conditionsToday);
+            String json = new Gson().toJson(condition);
             response.getWriter().write(json);
 
         } catch (NumberFormatException ex) {
