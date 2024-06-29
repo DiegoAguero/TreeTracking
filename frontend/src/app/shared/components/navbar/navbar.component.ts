@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { RouterLink, RouterModule, Routes } from '@angular/router';
 import { routersLinksI } from '../../../core/interfaces/routes.interface';
 import { CommonModule } from '@angular/common';
@@ -9,12 +9,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
-  animations: [
-
-  ]
 })
-export class NavbarComponent {
+export class NavbarComponent  {
   @Input({
     required: true, transform: (value:Routes) => {
       if( !value ) return value;
@@ -28,8 +24,7 @@ export class NavbarComponent {
     }
   }) defineRoute!: routersLinksI[];
 
-  ngOnInit(): void {
-  }
+  sidebarVisible: boolean = false;
 
   showHideNav(el: HTMLDivElement){
     if( el.classList.contains('hidden') ){

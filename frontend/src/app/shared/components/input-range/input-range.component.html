@@ -1,1 +1,13 @@
-<p>input-range works!</p>
+<label
+  for="default-range"
+  class="block mb-2 text-sm font-medium text-gray-900 bg-gray-200 rounded p-2 dark:text-white"
+>{{ valueSignalRange() }}{{ textLabel() }}</label>
+<input
+  id="default-range"
+  type="range" [value]="range().initValue"
+  #inputRange
+  (input)="renderViewRange(inputRange.value)"
+  (change)="emitValue(inputRange.value)"
+  [min]="range().min" [max]="range().max"
+  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+>

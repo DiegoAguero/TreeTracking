@@ -11,10 +11,12 @@ import { typeSVG } from '@shared/svg/svg';
 import { PopupComponent } from '@shared/components/popup/popup.component';
 import { IPopup } from '@shared/interfaces/popup.interface';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, PopupComponent],
+  providers: [],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -25,11 +27,11 @@ export class AppComponent {
 
   @ViewChild('mapDiv')
   public mapDivElement!: ElementRef;
-  private markers = signal<Marker[]>([]);
+  private markers:Marker[] = []; //
   public computedShowMap = computed<boolean>(() => this.coreService.isVisibleMap());
   /** Injectors **/
   private viewContainerRef = inject(ViewContainerRef);
-
+  private numberZonesStatic!: number;
   constructor(){
     this.coreService;
     effect(() => {
@@ -40,9 +42,8 @@ export class AppComponent {
     }, { allowSignalWrites: true });
   }
 
-
   createMap(){
-    if (!this.mapService.mapSignal() ){
+    if (!this.mapService.mapSignal()){
       this.mapService.mapSignal.set(new Map({
         container: this.mapDivElement.nativeElement,
         style: 'mapbox://styles/mapbox/standard',
@@ -50,6 +51,8 @@ export class AppComponent {
         center: this.coreService.userLocationComputed() ?? [2.15899, 41.38879],
         zoom: 5, // starting zoom
       }));
+
+      this.numberZonesStatic = this.coreService.zonesTreeComputed().length;
 
       if (!this.mapService.mapSignal()) return;
       this.addPopupToMap(this.coreService.zonesTreeComputed());
@@ -61,6 +64,11 @@ export class AppComponent {
       this.mapDivElement.nativeElement.classList.remove('hidden');
     } else if (!this.computedShowMap() && !this.mapDivElement.nativeElement.classList.contains('hidden')){
       this.mapDivElement.nativeElement.classList.add('hidden');
+    }
+
+    if (this.numberZonesStatic !== this.coreService.zonesTreeComputed().length){
+      this.removePopMap();
+      this.addPopupToMap(this.coreService.zonesTreeComputed());
     }
   }
   /**
@@ -105,12 +113,8 @@ export class AppComponent {
         .setPopup(popup)
         .addTo(this.mapService.mapSignal()!);
       newMarkers.push(newMarker);
+      this.markers.push(newMarker)
     }
-    this.markers.update(markers => ({
-      markers,
-      ...newMarkers
-    }));
-
 
     // const bounds = new LngLatBounds();
     // newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
@@ -119,6 +123,14 @@ export class AppComponent {
     //   padding: 200
     // });
 
+  }
+
+  removePopMap(){
+    // Remueve los popups segun el dato del filtro.
+    for(let marker of this.markers){
+      marker.remove();
+    }
+    this.numberZonesStatic = this.coreService.zonesTreeComputed().length;
   }
 
   colorMarker(humidity: number): string {

@@ -5,7 +5,14 @@ import { Component, Input, input } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './corporate-logo.component.html',
-  styleUrl: './corporate-logo.component.css'
+  styles: `
+    img {
+      position: fixed;
+      bottom: 1.2rem;
+      right: 1.2rem;
+      z-index: 999;
+    }
+  `
 })
 export class CorporateLogoComponent {
 

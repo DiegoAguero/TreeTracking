@@ -13,7 +13,7 @@ interface inforGeneral {
   standalone: true,
   imports: [ CheckCircleComponent ],
   templateUrl: './information-generic.component.html',
-  styleUrl: './information-generic.component.css'
+  styles: ``
 })
 export class InformationGenericComponent {
 

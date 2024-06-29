@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './droplet.component.html',
-  styleUrl: './droplet.component.css'
 })
 export class DropletComponent {
 

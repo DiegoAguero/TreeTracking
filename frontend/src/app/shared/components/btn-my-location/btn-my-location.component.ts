@@ -7,7 +7,13 @@ import { MapService } from '@maps/services/map.service';
   standalone: true,
   imports: [],
   templateUrl: './btn-my-location.component.html',
-  styleUrl: './btn-my-location.component.css'
+  styles: `
+    button {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+    }
+  `
 })
 export class BtnMyLocationComponent {
 

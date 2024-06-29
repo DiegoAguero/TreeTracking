@@ -1,4 +1,5 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlacesApiClient } from '@maps/api/placesApiClient';
 import { Feature, PlacesResponse } from '@maps/interfaces/places.interface';
 import { map } from 'rxjs';
@@ -8,7 +9,8 @@ import { map } from 'rxjs';
 })
 export class PlacesService {
 
-  private placesApi = inject(PlacesApiClient);
+  private readonly placesApi = inject(PlacesApiClient);
+  private readonly _destroyRef = inject(DestroyRef);
   public isLoadingPlaces = signal<boolean>(false);
   public placesSignal = signal<Feature[]>([]);
 
@@ -33,7 +35,8 @@ export class PlacesService {
       }
     })
       .pipe(
-        map(response => response.features)
+        map(response => response.features),
+        takeUntilDestroyed(this._destroyRef)
       ).subscribe(
         {
           next: (features) => {

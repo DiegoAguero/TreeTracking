@@ -1,35 +1,31 @@
+<section class="mt-1">
+  <app-filter  label="Filtro de zonas" placeholder="Buscar por palabras clave" (filter)="valueToFilter.set($event)"/>
+  <div class="mat-elevation-z8">
+    <mat-table mat-table matSort [dataSource]="dataSource" >
+      @for (column of displayedColumns(); track $index) {
+        <ng-container [matColumnDef]="column">
 
-<div class="relative overflow-x-auto max-h-[85vh] shadow-md sm:rounded-lg my-[5%]">
-  <table class="w-full overflow-y-scroll text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-    <caption class="text-lg font-bold py-4 bg-white">{{ titleS() }}</caption>
-    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0">
-      <tr>
-        @for (column of columnS(); track $index) {
-          <th scope="col" class="px-6 py-3 text-center">
-            {{ column }}
-          </th>
-        }
-        <th scope="col" class="px-6 py-3">
-          Acciones
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (data of dataSourceS(); track $index;) {
-        <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-100 text-center">
-          <td class="px-6 py-4">{{ data.humidity }} %</td>
-          <td class="grid place-items-center px-6 py-4">
-            <app-fire-action class="mx-auto" [isFire]="data.fire_detected" />
+          @if(this.sortableColumns().includes(column)){
+            <th mat-header-cell *matHeaderCellDef mat-sort-header [sortActionDescription]="column"> {{column | titlecase}} </th>
+          } @else {
+            <th mat-header-cell *matHeaderCellDef> {{column | titlecase}} </th>
+          }
+          <td class="text-center" mat-cell *matCellDef="let element">
+            @if(dataComputed(element[column])){
+              <app-fire-action [isFire]="element[column]" />
+            }@else {
+              {{element[column]}}
+            }
+
           </td>
-          <td class="px-6 py-4">{{ data.temperature }}</td>
-          <td class="px-6 py-4">{{ data.property.description }}</td>
-          <td class="px-6 py-4">
-            <button (click)="onAction('show', data)">
-              <app-search />
-            </button>
-          </td>
-        </tr>
+
+        </ng-container>
       }
-    </tbody>
-  </table>
-</div>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+      <tr  mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+  </div>
+</section>

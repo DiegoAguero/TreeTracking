@@ -18,4 +18,6 @@ export interface Property {
   coord_x: number;
   coord_y: number;
   description: string;
+  locality: string;
+  country: string;
 }

@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DirectionsApiClient } from '@maps/api/directionsApiClient';
 import { DirectionsResponse, Route } from '@maps/interfaces/directions.interface';
 import { AnySourceData, LngLatBounds, LngLatLike, Map, Marker } from 'mapbox-gl';
@@ -13,7 +13,8 @@ export class MapService {
 
   // Whit Signals
   public mapSignal = signal<Map | undefined>(undefined);
-  private directionsApi = inject(DirectionsApiClient);
+  private readonly directionsApi = inject(DirectionsApiClient);
+  private readonly _destroyRef = inject(DestroyRef);
 
   public isMapReadyComputed = computed(() => {
     return !!this.mapSignal();
@@ -47,52 +48,11 @@ export class MapService {
   }
 
 
-
-  // createMarkersFromPlaces(places: Feature[], userLocation: [number, number]) {
-  //   // Crear instancias del erro para saber que error es
-  //   if (!this.mapSignal()) throw Error("Mapa no inicializado");
-  //   this.markers.update(marker => []);
-
-  //   const newMarkers: Marker[] = [];
-
-  //   for (const place of places) {
-
-  //     const [lng, lat] = place.center;
-
-  //     const popup = new Popup()
-  //       .setHTML(`
-  //         <h6>${place.text_es}</h6>
-  //         <span>${place.place_name}</span>
-  //       `);
-
-  //     const newMarker = new Marker()
-  //       .setLngLat([lng, lat])
-  //       .setPopup(popup)
-  //       .addTo(this.mapSignal()!);
-
-  //     newMarkers.push(newMarker)
-  //   }
-
-  //   this.markers.update(markers => ({
-  //     markers,
-  //     ...newMarkers
-  //   }));
-
-  //   if (places.length === 0) return;
-  //   // LIMITES DEL MAPA (Subir el scroll de los mapas)
-
-  //   const bounds = new LngLatBounds();
-  //   newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
-  //   bounds.extend(userLocation);
-
-  //   this.mapSignal()!.fitBounds(bounds, {
-  //     padding: 200
-  //   });
-
-  // }
-
   getRouteBetweenPoints(start: [number, number], end: [number, number]) {
     this.directionsApi.get<DirectionsResponse>(`/${start.join(',')};${end.join(',')}`)
+      .pipe(
+        takeUntilDestroyed(this._destroyRef)
+      )
       .subscribe(({ routes }) => this.drawPolyLine(routes[0]))
   }
 

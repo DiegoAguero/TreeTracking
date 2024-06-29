@@ -6,7 +6,6 @@ import { Component, input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './thermometer.component.html',
-  styleUrl: './thermometer.component.css'
 })
 export class ThermometerComponent {
   public colorSvg = input.required<string>();

@@ -5,7 +5,6 @@ import { Component, input } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './fire-action.component.html',
-  styleUrl: './fire-action.component.css'
 })
 export class FireActionComponent {
 

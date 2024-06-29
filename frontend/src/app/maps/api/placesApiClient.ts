@@ -22,11 +22,11 @@ export class PlacesApiClient extends HttpClient {
     params?: HttpParams | {
       [param:string]: string |number | boolean | ReadonlyArray<string |number|boolean>
     }
-  }) {
+  }, limit:number = 5) {
     url = this.baseUrl + url;
     return super.get<T>( url, {
       params:{
-        limit: 5,
+        limit: limit,
         language: 'es', // Definir en la app
         access_token: environment.TOKEN_MAP_BOX,
         ...options.params

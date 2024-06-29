@@ -10,7 +10,6 @@ import { ThermometerComponent } from '@shared/svg/thermometer/thermometer.compon
   standalone: true,
   imports: [CommonModule, ThermometerComponent],
   templateUrl: './popup.component.html',
-  styleUrl: './popup.component.css'
 })
 export class PopupComponent implements AfterViewInit {
 

@@ -1,27 +1,31 @@
 import { Component, OnInit, computed, inject } from '@angular/core';
-import { getEntityProperties } from '@core/interfaces/tabla-column.interface';
+import { ColumnKeys, dataComputedCountry, getEntityCountryTable } from '@core/interfaces/tabla-column.interface';
 import { CoreService } from '@core/services/core.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { TableGenericComponent } from '@shared/components/table-generic/table-generic.component';
+import { MatCardModule } from '@angular/material/card';
 
+
+const MAT_MODULES = [MatCardModule];
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [LoadingComponent, TableGenericComponent],
+  imports: [LoadingComponent, TableGenericComponent, MAT_MODULES],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css'
+  styles: ''
 })
 export default class TableComponent implements OnInit {
 
   private coreService = inject(CoreService);
   public dataService = computed( () =>
-    this.coreService.zonesTreeComputed()
+    getEntityCountryTable(this.coreService.zonesTreeComputed())
   );
-  public colums: string[] = [];
+  public displayColumns: ColumnKeys<dataComputedCountry> = ['country', 'locality', 'humidity', 'fire_detected', 'description', 'actions'];
+  sortables: ColumnKeys<dataComputedCountry> = ['country', 'locality', 'humidity', 'fire_detected', 'description'];
 
   constructor(){
   }
   ngOnInit(): void {
-    this.colums = getEntityProperties('country');
+
   }
 }

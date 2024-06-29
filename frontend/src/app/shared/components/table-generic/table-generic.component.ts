@@ -1,41 +1,84 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
-import { Country } from '@core/interfaces/country.interfaces';
-import { Accion } from '@core/interfaces/tabla-column.interface';
+import { AfterViewInit, Component, OnInit, ViewChild, effect, input, signal } from '@angular/core';
 import { FireActionComponent } from '@shared/svg/fire-action/fire-action.component';
 import { SearchComponent } from '@shared/svg/search/search.component';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { CommonModule } from '@angular/common';
+import { FilterComponent } from '../filter/filter.component';
 
+
+const MAT_MODULE = [MatSortModule, MatTableModule, CommonModule, MatPaginatorModule];
 
 @Component({
   selector: 'app-table-generic',
   standalone: true,
-  imports: [ FireActionComponent, SearchComponent ],
+  imports: [FireActionComponent, SearchComponent, MAT_MODULE, FilterComponent],
   templateUrl: './table-generic.component.html',
-  styleUrl: './table-generic.component.css'
+  styles: `
+    table {
+      width: 100%;
+    }
+
+    th.mat-sort-header-sorted {
+      color: black;
+    }
+    .mat-mdc-table {
+      width: 100%;
+      max-height: 500px;
+      overflow: auto;
+    }
+
+    .mat-column-name {
+      height: 100px;
+    }
+  `
 })
-export class TableGenericComponent {
+export class TableGenericComponent<T> implements AfterViewInit, OnInit {
+
+  @ViewChild(MatSort)
+    private readonly sort!: MatSort;
+
+  @ViewChild(MatPaginator)
+    private readonly paginator!:MatPaginator;
+
 
   // ** Signals Table
-  public titleS = signal<string>('');
-  public columnS = signal<string[]>([]);
-  public dataSourceS = signal<Country[]>([]);
+  titleS = input<string>('');
+  displayedColumns = input.required<string[]>();
+  data = input.required<T[]>();
 
-  @Input() set title(title: string) {
-    this.titleS.set( title );
+
+  dataSource = new MatTableDataSource<T>();
+  valueToFilter = signal('');
+  sortableColumns = input<string[]>([]);
+
+  constructor(){
+    effect(() => {
+      if (this.valueToFilter()) {
+        this.dataSource.filter = this.valueToFilter();
+      } else {
+        this.dataSource.filter = '';
+      }
+
+      if (this.data()) {
+        this.dataSource.data = this.data();
+      }
+    }, { allowSignalWrites: true })
   }
 
-  @Input() set column(columns: string[]) {
-    this.columnS.set( columns );
+  ngOnInit(): void {
+    this.dataSource.data = this.data();
+  }
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
   }
 
-  @Input() set dataSource(dataSource: Country[]) {
-    this.dataSourceS.set( dataSource );
+  dataComputed(data:T){
+    if(typeof data === 'boolean'){
+      return true;
+    }
+    return false;
   }
-
-  @Output() accion: EventEmitter<Accion> = new EventEmitter();
-
-  onAction(action:string, row?: any ){
-    this.accion.emit({ action: action, row: row });
-  }
-
-
 }

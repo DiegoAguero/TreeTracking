@@ -5,5 +5,13 @@
   <shared-btn-my-location btn-text="My Location" />
   <maps-search-bar class="w-full grid grid-cols-1 place-items-center" />
   <shared-information [numberItems]="this.coreService.numberLocations()" />
+  <div class="card absolute top-[30%] left-5 flex flex-col w-[18%] gap-4">
+    <div class="w-full">
+      <app-input-range [range]="mockDateTemp" (emiValueRange)="filterZones($event)" />
+    </div>
+    <div class="w-full">
+      <app-input-range textLabel="% Humedad" [range]="mockDateTemp" (emiValueRange)="filterByHumidity($event)" />
+    </div>
+  </div>
 }
 <shared-corporate-logo altImage="Logo Angular" />

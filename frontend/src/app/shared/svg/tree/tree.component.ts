@@ -5,7 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './tree.component.html',
-  styleUrl: './tree.component.css'
 })
 export class TreeComponent {
 

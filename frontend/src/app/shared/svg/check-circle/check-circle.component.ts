@@ -5,7 +5,6 @@ import { Component, input } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './check-circle.component.html',
-  styleUrl: './check-circle.component.css'
 })
 export class CheckCircleComponent {
   titleSpan = input<string>();

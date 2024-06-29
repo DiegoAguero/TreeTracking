@@ -1,8 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Country } from '@core/interfaces/country.interfaces';
 import { environment } from '@environments/environments';
+import { PlacesResponse } from '@maps/interfaces/places.interface';
 import { places } from '@maps/mock/places';
+import { Observable, map, tap } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class CoreService {
@@ -15,6 +17,7 @@ export class CoreService {
   public userLocationComputed = computed(() => this.userLocation());
   public numberLocations = computed(() => this.#zoneTree().length);
   public isVisibleMap = signal<boolean>(false);
+  public informationGenrealByLocation = signal< PlacesResponse|undefined >(undefined);
 
   constructor() {
     this.getUserLocation()
@@ -61,15 +64,37 @@ export class CoreService {
           this.#zoneTree.set(places);
         },
         error: (err) => {
-          this.#zoneTree.set(places)
+          this.#zoneTree.set(places);
         },
       });
-    // let params = new HttpParams()
-    //   .set('min', 10)
-    //   .set('max', 25);
-
-    // this.http.get<any>(`${environment.URL_API_SENSOR}/conditions/temperature`, { params }).subscribe((response) => {console.log(response)})
   }
 
+  getZonesByTemperature( min:number, max:number ):Observable<Country[]>{
+    let params = new HttpParams()
+      .set('min', min)
+      .set('max', max);
+    return this.http.get<Country[]>(`${environment.URL_API_SENSOR}/conditions/temperature`, { params })
+      .pipe(
+        tap( (country) => this.#zoneTree.set(country) )
+      );
+  }
 
+  getZonesByHumidity(min: number, max: number): Observable<Country[]> {
+    let params = new HttpParams()
+      .set('min', min)
+      .set('max', max);
+    return this.http.get<Country[]>(`${environment.URL_API_SENSOR}/conditions/humidity`, { params })
+      .pipe(
+        tap((country) => this.#zoneTree.set(country))
+      );
+  }
+
+  private decodeString(input: string): string {
+    try {
+      return decodeURIComponent(escape(input));
+    } catch (e) {
+      console.error('Error decoding string:', e);
+      return input;
+    }
+  }
 }
