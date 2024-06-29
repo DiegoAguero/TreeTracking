@@ -1,4 +1,4 @@
-<section class="mt-1">
+<section class="mt-1 w-auto h-full p-4">
   <app-filter  label="Filtro de zonas" placeholder="Buscar por palabras clave" (filter)="valueToFilter.set($event)"/>
   <div class="mat-elevation-z8">
     <mat-table mat-table matSort [dataSource]="dataSource" >
@@ -27,7 +27,7 @@
       }
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-      <tr  mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>

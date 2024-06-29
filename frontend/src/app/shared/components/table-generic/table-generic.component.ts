@@ -28,12 +28,15 @@ const MAT_MODULE = [MatSortModule, MatTableModule, CommonModule, MatPaginatorMod
     }
     .mat-mdc-table {
       width: 100%;
-      max-height: 500px;
+      max-height: 100vh;
       overflow: auto;
     }
 
     .mat-column-name {
       height: 100px;
+    }
+    tr{
+      width: 100% !important;
     }
   `
 })
