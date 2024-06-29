@@ -52,3 +52,12 @@ WEATHER_API_KEY=${yourApikeyFrom_home.openweathermap.org}
 *If the variables are not correctly provided, it redirects to `/conditions`.
 **The `locationId` corresponds to `id_property`.
 
+## Endpoint for countries in database:
+
+`localhost:8080/countries`
+
+## Endpoint for localities with countries in database:
+
+`localhost:8080/localities`
+
+
