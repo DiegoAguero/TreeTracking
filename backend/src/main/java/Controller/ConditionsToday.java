@@ -28,6 +28,9 @@ public class ConditionsToday extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         response.setHeader("Access-Control-Allow-Credentials", "true");
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
 
         Date currentDate = Date.valueOf(LocalDate.now());
         try {

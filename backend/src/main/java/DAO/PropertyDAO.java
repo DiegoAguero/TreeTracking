@@ -9,26 +9,48 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PropertyDAO {
-    
-    private static final String SQL_SELECT_ALL = "SELECT * FROM properties";
-    private static final String SQL_SELECT = "SELECT * FROM properties WHERE id_property=?";
+
+    private static final String SQL_SELECT_ALL
+            = "SELECT \n"
+            + "	p.id_property, \n"
+            + "	p.coord_x, \n"
+            + "	p.coord_y, \n"
+            + "	p.description, \n"
+            + "	l.localityName, \n"
+            + "	c.countryName \n"
+            + "FROM properties p \n"
+            + "JOIN localities l ON p.id_locality = l.id_locality\n" 
+            + "JOIN countries c ON l.id_country = c.id_country";
+    private static final String SQL_SELECT
+            = "SELECT \n"
+            + "	p.id_property, \n"
+            + "	p.coord_x, \n"
+            + "	p.coord_y, \n"
+            + "	p.description, \n"
+            + "	l.localityName, \n"
+            + "	c.countryName \n"
+            + "FROM properties p \n"
+            + "JOIN localities l ON p.id_locality = l.id_locality\n" 
+            + "JOIN countries c ON l.id_country = c.id_country\n"
+            + "WHERE p.id_property = ?";
+
     private static final String SQL_INSERT = "INSERT INTO properties(coord_x, coord_y, description) VALUES(?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE properties SET coord_x=?, coord_y=?, description=? WHERE id_property = ?";
     private static final String SQL_DELETE = "DELETE FROM properties WHERE id_property=?";
-    
+
     private PropertyDTO fromResultSet(ResultSet rs) throws SQLException {
         int id_property = rs.getInt("id_property");
         double coord_x = rs.getDouble("coord_x");
         double coord_y = rs.getDouble("coord_y");
         String description = rs.getString("description");
-        String locality = rs.getString("locality");
-        String country = rs.getString("country");
-        
-        PropertyDTO property = new PropertyDTO(id_property,coord_x,coord_y,description,locality,country);
-        
+        String locality = rs.getString("localityName");
+        String country = rs.getString("countryName");
+
+        PropertyDTO property = new PropertyDTO(id_property, coord_x, coord_y, description, locality, country);
+
         return property;
     }
-    
+
     public List<PropertyDTO> selectAll() throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -52,7 +74,7 @@ public class PropertyDAO {
 
         return properties;
     }
-    
+
     public PropertyDTO select(int id_property) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -75,7 +97,7 @@ public class PropertyDAO {
         }
         return property;
     }
-    
+
     public int insert(PropertyDTO property) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -95,7 +117,7 @@ public class PropertyDAO {
 
         return rows;
     }
-    
+
     public int update(PropertyDTO property) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -118,7 +140,7 @@ public class PropertyDAO {
 
         return rows;
     }
-    
+
     public int delete(PropertyDTO property) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;

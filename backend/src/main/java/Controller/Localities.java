@@ -1,7 +1,7 @@
 package Controller;
 
-import DTO.ConditionDTO;
-import Utilities.WeatherConsults;
+import DAO.LocalityDAO;
+import DTO.LocalityDTO;
 import com.google.gson.Gson;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -9,16 +9,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
-@WebServlet(name = "ConditionsByUbication", urlPatterns = {"/conditions/ubication"})
-public class ConditionsByUbication extends HttpServlet {
+@WebServlet(name = "Localities", urlPatterns = {"/localities"})
+public class Localities extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,35 +30,22 @@ public class ConditionsByUbication extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            int id_property = Integer.parseInt(request.getParameter("id"));
+            List<LocalityDTO> localities = new LocalityDAO().selectAll();
 
-            Date currentDate = Date.valueOf(LocalDate.now());
-            List<ConditionDTO> conditionsToday = new WeatherConsults().getConditionsForToday(currentDate);
-            ConditionDTO condition = null;
-            if (conditionsToday != null) {
-                conditionsToday = conditionsToday.stream()
-                        .filter(c -> c.getProperty().getId_property() == id_property)
-                        .collect(Collectors.toList());
-                condition = conditionsToday.get(0);
-            } else {
+            if (localities == null) {
                 response.getWriter().write("{}");
                 return;
             }
-            String json = new Gson().toJson(condition);
+
+            String json = new Gson().toJson(localities);
             response.getWriter().write(json);
 
         } catch (NumberFormatException ex) {
-            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendRedirect(request.getContextPath() + "/conditions");
-            return;
+            Logger.getLogger(Localities.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendRedirect(request.getContextPath() + "/conditions");
-            return;
+            Logger.getLogger(Localities.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            Logger.getLogger(ConditionsByUbication.class.getName()).log(Level.SEVERE, null, ex);
-            response.sendRedirect(request.getContextPath() + "/conditions");
-            return;
+            Logger.getLogger(Localities.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -77,3 +61,4 @@ public class ConditionsByUbication extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
+
