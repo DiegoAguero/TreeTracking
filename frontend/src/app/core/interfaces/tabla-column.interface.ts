@@ -6,6 +6,7 @@ export interface Accion<T = any>{
   row?: T
 }
 export interface dataComputedCountry {
+  id: number
   humidity: number,
   fire_detected: boolean,
   temperature: number,
@@ -19,8 +20,9 @@ export type ColumnKeys<T> = Array<keyof T>;
 export const getEntityCountryTable = (countries: Country[]): dataComputedCountry[] => {
   let result: dataComputedCountry[] = [];
   for(let { humidity, fire_detected, temperature, property} of countries){
-    let { country, locality, description } = property;
+    let { id_property, country, locality, description } = property;
     let data = {
+      id: id_property,
       humidity,
       fire_detected,
       temperature,

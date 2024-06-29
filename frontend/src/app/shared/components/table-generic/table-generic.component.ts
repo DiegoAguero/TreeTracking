@@ -6,14 +6,17 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { FilterComponent } from '../filter/filter.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 
 
-const MAT_MODULE = [MatSortModule, MatTableModule, CommonModule, MatPaginatorModule];
+const MAT_MODULE = [MatSortModule, MatTableModule, CommonModule, MatPaginatorModule, MatIconModule, MatButtonModule];
 
 @Component({
   selector: 'app-table-generic',
   standalone: true,
-  imports: [FireActionComponent, SearchComponent, MAT_MODULE, FilterComponent],
+  imports: [FireActionComponent, SearchComponent, MAT_MODULE, FilterComponent, RouterModule],
   templateUrl: './table-generic.component.html',
   styles: `
     table {
@@ -76,9 +79,6 @@ export class TableGenericComponent<T> implements AfterViewInit, OnInit {
   }
 
   dataComputed(data:T){
-    if(typeof data === 'boolean'){
-      return true;
-    }
-    return false;
+    return typeof data === 'boolean';
   }
 }

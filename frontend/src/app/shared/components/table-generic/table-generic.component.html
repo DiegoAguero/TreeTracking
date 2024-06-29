@@ -16,7 +16,11 @@
             }@else {
               {{element[column]}}
             }
-
+            @if(column === 'actions'){
+              <a [routerLink]="['/zone', element.id]"  mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+                <mat-icon>search</mat-icon> 
+              </a>
+            }
           </td>
 
         </ng-container>
