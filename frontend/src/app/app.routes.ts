@@ -5,8 +5,14 @@ export const routes: Routes = [
     path: 'home',
     title: 'Tree Tracking',
     loadComponent: () => import('@routes/home/home-page.component'),
-    children: []
   },
+  {
+    path: 'auth',
+    title: 'Unete a nosotros',
+    loadComponent: () => import('@routes/auth/layaout.component'),
+    loadChildren: () => import('@routes/auth/auth.routes')
+  },
+  // TODO: rutas con CanActived
   {
     path: 'table',
     title: 'Tabla',

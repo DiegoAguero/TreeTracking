@@ -1,0 +1,72 @@
+<div class="grid place-items-center m-8 h-full">
+  <form (ngSubmit)="onSubmit()" [formGroup]="contactForm" class="flex flex-col gap-5 sm:w-2/3 lg:w-[40%] shadow-md rounded p-4">
+    <h1 class="text-5xl text-center font-semibold">Contact form</h1>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input placeholder="Your name" matInput type="text"formControlName="name">
+      @if (contactForm.get('name')?.touched && contactForm.get('name')?.invalid) {
+        <mat-error>{{ updateErrorMessage('name') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input [type]="hidePassword() ? 'password' : 'text'" placeholder="Your password" matInput type="password" formControlName="password">
+      <button mat-icon-button matSuffix (click)="hidePassword.set(!hidePassword())" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
+        <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      @if (contactForm.get('password')?.touched && contactForm.get('password')?.invalid) {
+        <mat-error>{{ updateErrorMessage('password') }}</mat-error>
+      }
+    </mat-form-field>
+
+    @if(!isLogin()){
+      <mat-form-field>
+        <mat-label>Password confirm</mat-label>
+        <input [type]="hidePasswordConfirm() ? 'password' : 'text'" placeholder="Your password" matInput type="password" formControlName="confirmPassword">
+        <button mat-icon-button matSuffix (click)="hidePasswordConfirm.set(!hidePasswordConfirm())" [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePasswordConfirm()">
+          <mat-icon>{{hidePasswordConfirm() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        @if(contactForm.get('confirmPassword')?.touched && contactForm.getError('mustBeEqual') ){
+          <mat-error>Password no match</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Country</mat-label>
+        <mat-select (selectionChange)="onCountryChanged()" formControlName="country">
+          @for (country of countries(); track country.id_country) {
+            <mat-option [value]="country.id_country">{{ country.countryName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Locality</mat-label>
+        <mat-select formControlName="locality">
+          @for (locality of localities(); track locality.id_locality) {
+            <mat-option [value]="locality.id_locality">{{ locality.localityName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    <button mat-raised-button type="button">Cancel</button>
+    <button [disabled]="!contactForm.valid"  [ngClass]="{ 'cursor-not-allowed' : !contactForm.valid }" mat-raised-button color="primary" type="submit">
+      {{ isLogin() ? 'Login' : 'Register' }}
+    </button>
+    <div class="w-full flex justify-end">
+      @if(isLogin()){
+        <p>
+          Don't have an account? <a class="text-blue-400" routerLink="/auth/register" >Register!</a>
+        </p>
+      }@else {
+        Already have an account? <a class="text-blue-400" [routerLink]="['/auth/login']">Access!</a>
+      }
+    </div>
+  </form>
+</div>
+
+
+
