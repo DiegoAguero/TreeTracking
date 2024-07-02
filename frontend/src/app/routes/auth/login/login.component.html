@@ -3,7 +3,7 @@
     <h1 class="text-5xl text-center font-semibold">Contact form</h1>
     <mat-form-field>
       <mat-label>Name</mat-label>
-      <input placeholder="Your name" matInput type="text"formControlName="name">
+      <input placeholder="Your name" matInput type="text" formControlName="name">
       @if (contactForm.get('name')?.touched && contactForm.get('name')?.invalid) {
         <mat-error>{{ updateErrorMessage('name') }}</mat-error>
       }
@@ -23,13 +23,18 @@
     @if(!isLogin()){
       <mat-form-field>
         <mat-label>Password confirm</mat-label>
-        <input [type]="hidePasswordConfirm() ? 'password' : 'text'" placeholder="Your password" matInput type="password" formControlName="confirmPassword">
+        <input
+          (change)="checkedErrorMustBeEqualTo($event, 'password')"
+          [type]="hidePasswordConfirm() ? 'password' : 'text'"
+          placeholder="Your password" matInput
+          type="password"
+          formControlName="confirmPassword">
         <button mat-icon-button matSuffix (click)="hidePasswordConfirm.set(!hidePasswordConfirm())" [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePasswordConfirm()">
           <mat-icon>{{hidePasswordConfirm() ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
-        @if(contactForm.get('confirmPassword')?.touched && contactForm.getError('mustBeEqual') ){
-          <mat-error>Password no match</mat-error>
+        @if(contactForm.get('confirmPassword')?.touched && contactForm.getError('mustBeEqual')){
+          <span class="text-red-500 m-0">Password no match</span>
         }
       </mat-form-field>
 
@@ -53,17 +58,18 @@
     }
 
     <button mat-raised-button type="button">Cancel</button>
-    <button [disabled]="!contactForm.valid"  [ngClass]="{ 'cursor-not-allowed' : !contactForm.valid }" mat-raised-button color="primary" type="submit">
+    <button [disabled]="!contactForm.valid" mat-raised-button color="primary" type="submit">
       {{ isLogin() ? 'Login' : 'Register' }}
     </button>
     <div class="w-full flex justify-end">
-      @if(isLogin()){
-        <p>
-          Don't have an account? <a class="text-blue-400" routerLink="/auth/register" >Register!</a>
-        </p>
-      }@else {
-        Already have an account? <a class="text-blue-400" [routerLink]="['/auth/login']">Access!</a>
-      }
+      <p>
+        @if(isLogin()){
+            Don't have an account? <a class="text-blue-400" routerLink="/auth/register"> Register!</a>
+        }@else {
+
+            Already have an account? <a class="text-blue-400" [routerLink]="['/auth/login']"> Access!</a>
+          }
+      </p>
     </div>
   </form>
 </div>

@@ -16,9 +16,12 @@ const MATERIAL_MODULES = [MatLabel, MatFormField, MatInput, MatButtonModule, Mat
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MATERIAL_MODULES, ReactiveFormsModule, CommonModule,RouterModule],
+  imports: [MATERIAL_MODULES, ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styles: `
+    button.mat-raised-button.no-drop {
+      cursor: no-drop !important;
+    }
   `
 })
 export default class LoginComponent implements OnInit {
@@ -32,6 +35,7 @@ export default class LoginComponent implements OnInit {
   public countries = signal<CountryData[]>([]);
   public hidePassword = signal<boolean>(true);
   public hidePasswordConfirm = signal<boolean>(true);
+  public musEqual = signal<boolean>(true);
 
 
   constructor(){
@@ -76,15 +80,21 @@ export default class LoginComponent implements OnInit {
   }
 
   updateErrorMessage(type: string) {
-    console.log(this.contactForm.get(type)?.errors)
     if (this.contactForm.get(type)?.hasError('required')) {
       this.errorMessage = 'You must enter a value';
+    } else if (this.contactForm.get(type)?.hasError('passwordIncomplete')){
+      this.errorMessage = `The password must have at least one capital letter and one number.`;
     } else if (this.contactForm.get(type)?.errors) {
       this.errorMessage = `Not a valid ${type}`;
-    } else {
-      this.errorMessage = 'Not found';
     }
     return this.errorMessage;
+  }
+
+
+  checkedErrorMustBeEqualTo(event: Event, musControl:string){
+    let value = (event.target as HTMLInputElement).value;
+    let compare = this.contactForm.get(musControl)!.value;
+    console.log( value === compare )
   }
 
   onSubmit() {

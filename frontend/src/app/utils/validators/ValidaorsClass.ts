@@ -10,7 +10,6 @@ export class ValidatorsCustom extends Validators {
     return (group: AbstractControl): ValidationErrors | null => {
       const fControl = group.get(firtsControl);
       const sControl = group.get(secondControl);
-      console.log(fControl?.value === sControl?.value ? null : { mustBeEqual: true })
       return fControl?.value === sControl?.value ? null : { mustBeEqual: true };
     }
   }
