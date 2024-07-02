@@ -1,6 +1,7 @@
 <div class="grid place-items-center m-8 h-full">
-  <form (ngSubmit)="onSubmit()" [formGroup]="contactForm" class="flex flex-col gap-5 sm:w-2/3 lg:w-[40%] shadow-md rounded p-4">
-    <h1 class="text-5xl text-center font-semibold">Contact form</h1>
+  <form (ngSubmit)="onSubmit()" [formGroup]="contactForm" class="flex flex-col gap-5 sm:w-2/3 lg:w-[40%] shadow shadow-[#DCFCE7] rounded p-4">
+    <h1
+      class="mb-4 text-4xl font-extrabold text-center leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-[#16A34A] bg-[#DCFCE7] rounded dark:bg-blue-500">Contact</mark> Form</h1>
     <mat-form-field>
       <mat-label>Name</mat-label>
       <input placeholder="Your name" matInput type="text" formControlName="name">
@@ -64,10 +65,10 @@
     <div class="w-full flex justify-end">
       <p>
         @if(isLogin()){
-            Don't have an account? <a class="text-blue-400" routerLink="/auth/register"> Register!</a>
+            Don't have an account? <a class="text-[#16A34A] underline" routerLink="/auth/register"> Register!</a>
         }@else {
 
-            Already have an account? <a class="text-blue-400" [routerLink]="['/auth/login']"> Access!</a>
+            Already have an account? <a class="text-[#16A34A] underline" [routerLink]="['/auth/login']"> Access!</a>
           }
       </p>
     </div>
