@@ -1,13 +1,13 @@
 
 <mat-card class="example-card table-background relative w-full h-[vh]">
   <mat-card-content>
-        @if(dataService().length > 0) {
-          <app-table-generic
-            class="w-full flex place-content-center" title="Estado de la vegetación"
-            [data]="dataService()" [displayedColumns]="displayColumns" [sortableColumns]="sortables"
-          />
-        } @else {
-          <app-loading class="grid place-items-center w-full h-screen" />
-        }
+    @if(dataService().length > 0) {
+      <app-table-generic
+        class="w-full flex place-content-center" title="Estado de la vegetación"
+        [data]="dataService()" [displayedColumns]="displayColumns" [sortableColumns]="sortables"
+      />
+    } @else {
+      <app-loading class="grid place-items-center w-full h-screen" />
+    }
   </mat-card-content>
 </mat-card>

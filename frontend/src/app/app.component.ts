@@ -3,7 +3,7 @@ import { RouterOutlet, Routes } from '@angular/router';
 import { CoreService } from '@core/services/core.service';
 import { NavbarComponent } from '@shared/components/navbar/navbar.component';
 import { routes } from './app.routes';
-import { Map, Popup, Marker, MarkerOptions } from 'mapbox-gl';
+import { Map, Popup, Marker, MarkerOptions, LngLatBounds } from 'mapbox-gl';
 import { MapService } from '@maps/services/map.service';
 import { CONSTANTES } from '@utils/constantes';
 import { Country } from '@core/interfaces/country.interfaces';
@@ -119,9 +119,13 @@ export class AppComponent {
     // const bounds = new LngLatBounds();
     // newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
 
-    // this.mapSignal()!.fitBounds(bounds, {
-    //   padding: 200
-    // });
+    // try {
+    //   this.mapService.mapSignal()!.fitBounds(bounds, {
+    //     padding: 200
+    //   });
+    // } catch (e) {
+    //   // console.log(e);
+    // }
 
   }
 

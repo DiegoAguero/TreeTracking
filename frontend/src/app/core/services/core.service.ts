@@ -89,12 +89,15 @@ export class CoreService {
       );
   }
 
-  private decodeString(input: string): string {
-    try {
-      return decodeURIComponent(escape(input));
-    } catch (e) {
-      console.error('Error decoding string:', e);
-      return input;
-    }
+  getZonesByTerm(query: string):Country[] {
+    let caseQuery = query.toLowerCase();
+    return this.#zoneTree().filter((zone) => {
+      let { property } = zone;
+      return (
+        property.description.toLowerCase().includes(caseQuery) ||
+        property.locality.toLowerCase().includes(caseQuery) ||
+        property.country.toLowerCase().includes(caseQuery)
+      );
+    });
   }
 }

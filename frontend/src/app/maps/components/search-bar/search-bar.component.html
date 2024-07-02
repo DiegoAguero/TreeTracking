@@ -1,15 +1,10 @@
 <div class="search-container grid grid-cols-1 place-items-center h-auto max-h-screen overflow-y-auto">
   <div class="relative w-[50%] grid" data-te-input-wrapper-init>
-    <input
-      type="text"
-      class="focus:ring-0 peer h-full  w-full rounded-[7px] border-2 border-black border-t-transparent bg-white/60 px-3 py-2 font-sans text-base font-bold text-black outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-slate-500 placeholder-shown:border-t-slate-500 focus:border-2 focus:border-fun-blue-800 focus:border-t-transparent focus:outline-0 dark:focus:border-persian-green-300 dark:focus:border-t-transparent dark:text-white dark:border-t-transparent dark:border-slate-300 dark:placeholder-shown:border-t-slate-300"
-      #txtQuery
-      (keyup)="onQueryChange( txtQuery.value )"
-    >
-    <label
-      class="before:content[' '] peer after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[14px] font-bold leading-tight text-black transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t-2 before:border-l before:border-black before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t-2 after:border-r after:border-black after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-slate-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-fun-blue-800 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:border-fun-blue-800 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:border-fun-blue-800 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500 dark:peer-placeholder-shown:text-slate-300 dark:peer-focus:text-persian-green-300 dark:peer-focus:before:border-persian-green-300 dark:peer-focus:after:border-persian-green-300 dark:text-slate-300 dark:after:border-slate-300 dark:before:border-slate-300">
-        Buscar un lugar...
-    </label>
+    <mat-form-field class="example-full-width">
+      <mat-label>Search place..</mat-label>
+      <input matInput placeholder="Ex. Roma" #txtQuery
+      (keyup)="onQueryChange( txtQuery.value )">
+    </mat-form-field>
   </div>
   <maps-search-results class="border w-[50%] bg-white" (emitSearch)="txtQuery.value = ''" />
 </div>

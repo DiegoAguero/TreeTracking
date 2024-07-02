@@ -6,15 +6,15 @@
 }
 
 <ul class="divide-y divide-gray-200 dark:divide-gray-700 max-h-[30vh] overflow-y-auto">
-  @for (place of placesComputed(); track place.id) {
+  @for (place of placeComputed(); track place.id_condition) {
     <li
       class="pb-3 sm:pb-4 hover:bg-slate-200 cursor-pointer grid rounded place-items-center md:place-items-start p-3 border"
-      [class]="place.id === selectedId() ? 'bg-slate-200' : ''" (click)="flyTo( place )">
+      [class]="place.property.id_property === selectedId() ? 'bg-slate-200' : ''" (click)="flyTo( place )">
       <h6 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600">
-        {{ place.text_es }}
+        {{ place.property.description }}
       </h6>
       <p class="text-base leading-normal tracking-normal text-gray-700 font-normal">
-        {{ place.place_name }}
+        {{ place.property.locality }}
       </p>
       <shared-btn-custom (emitClick)="getDirections( place )" textBtn="Addresses" />
     </li>
