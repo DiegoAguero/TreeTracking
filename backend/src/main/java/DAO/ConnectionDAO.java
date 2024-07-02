@@ -22,7 +22,7 @@ public class ConnectionDAO {
     private static final String DB_USER = properties.getProperty("JDBC_USER");
     private static final String DB_PASSWORD = properties.getProperty("JDBC_PASS");
     private static final String WEATHER_API_KEY = properties.getProperty("WEATHER_API_KEY");
-
+    private static final String JWT_KEY = properties.getProperty("JWT_KEY");
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
         try {
@@ -38,6 +38,9 @@ public class ConnectionDAO {
 
     public static String getWeatherApiKey(){
         return WEATHER_API_KEY;
+    }
+    public static String getJWTKey(){
+        return JWT_KEY;
     }
 
 }

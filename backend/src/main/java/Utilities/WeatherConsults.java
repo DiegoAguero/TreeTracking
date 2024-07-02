@@ -93,4 +93,19 @@ public class WeatherConsults {
         });
         return conditionsToday;
     }
+    public void getForecastFromSpecificZone(Date currentDate, int id_property) throws SQLException{
+        
+    }
+    // public void getForecastFromSpecificZone(Date currentDate, int id_property) throws SQLException{
+    //     PropertyDTO getCoordinates = new PropertyDAO().select(id_property);
+    //     OpenWeatherMapClient openWeatherMapClient = new OpenWeatherMapClient(ConnectionDAO.getWeatherApiKey());
+    //     final Forecast forecast = openWeatherMapClient
+    //     .forecast5Day3HourStep()
+    //     .byCoordinate(Coordinate.of(getCoordinates.getCoord_x(), getCoordinates.getCoord_y()))
+    //     .language(Language.ENGLISH)
+    //     .unitSystem(UnitSystem.METRIC)
+    //     .retrieve()
+    //     .asJava();
+    //     System.out.println(forecast.getWeatherForecasts());
+    // }
 }
