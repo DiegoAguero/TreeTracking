@@ -5,25 +5,23 @@
 package Controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.PrintWriter;
 
+import com.google.gson.Gson;
 
 import Auth.TokenService;
-import DAO.UserDAO;
-import DTO.UserDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-@WebServlet(name = "Login", urlPatterns = {"/login"})
-public class Login extends HttpServlet {
+
+@WebServlet(name = "AuthToken", urlPatterns = {"/auth"})
+public class AuthToken extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -47,6 +45,16 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        String header = request.getHeader("Authorization");
+        TokenService tokenService = new TokenService();
+        if(header != null && header.startsWith("Bearer ")){
+            String JWT = header.substring(7);
+            String jwtVerified = tokenService.verifyJWT(JWT);
+            String JSON = new Gson().toJson(jwtVerified);
+            response.getWriter().write(JSON);
+        }else{
+            response.getWriter().write("{status: 404, message: 'Token not found'}");
+        }
     }
 
     /**
@@ -60,32 +68,10 @@ public class Login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        UserDAO users = new UserDAO();
-        UserDTO user = null;
-        try {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            user = users.login(email, password);
-            System.out.println(user);
-            if(user != null){
-                TokenService tokenService = new TokenService();
-                String JWT = tokenService.createJWT(String.valueOf(user.getId()), user.getEmail(), String.valueOf(user.getLocality_id()));
-                response.addHeader("Authorization", "Bearer " + JWT);
-                String jsonJWT = new Gson().toJson(JWT);
-                response.getWriter().write(jsonJWT);
-            }else{
-                String json = new Gson().toJson("{status: '404', message: 'gmail invalido o contraseña invalida'}");
-                response.getWriter().write(json);
-            }
-        } catch (SQLException e) {
-            user = null;
-        }
-
     }
 
     /**
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override

@@ -14,7 +14,7 @@ import java.util.Date;
 
 import DAO.ConnectionDAO;
 public class TokenService {
-    public String createJWT(String id){
+    public String createJWT(String id, String email, String id_locality){
         long sessionTime = 900000;
         Date todayDate = new Date();
         Date logoutTime = new Date(todayDate.getTime() + sessionTime);
@@ -26,20 +26,28 @@ public class TokenService {
                      .issuedAt(todayDate)
                      .expiration(logoutTime)
                      .signWith(secretKey)
+                     .claim("email", email)
+                     .claim("locality", id_locality)
                      .compact();
         return jwt;
     }
 
-    // public String verifyJWT(String JWT){
-    //     try{
-    //         byte[] secretKeyBytes = Base64.getDecoder().decode(ConnectionDAO.getJWTKey());
-    //         SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);
-    //         JwtParserBuilder parserBuilder = Jwts.parser();
-    //         Jws<Claims> claimsJws = Jwts.parser()
-    //                                 .verifyWith(secretKey)
-    //                                 .claims();
-    //     }catch(Exception e){
-
-    //     }
-    // }
+    public String verifyJWT(String JWT){
+        String jwtVerified = null;
+        try{
+            String JWTKEY = ConnectionDAO.getJWTKey();
+            byte[] secretKeyBytes = JWTKEY.getBytes(StandardCharsets.UTF_8);
+            SecretKey secretKey = Keys.hmacShaKeyFor(secretKeyBytes);
+            Claims claimsJws = Jwts.parser()
+                                    .verifyWith(secretKey)
+                                    .build()
+                                    .parseSignedClaims(JWT)
+                                    .getPayload();
+            System.out.println("Verified. " + claimsJws);
+            jwtVerified = claimsJws.toString();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return jwtVerified;
+    }
 }

@@ -68,7 +68,6 @@ public class Register extends HttpServlet {
             String locality_id = request.getParameter("locality");
             UserDTO newUser = new UserDTO(email, password, Integer.parseInt(locality_id));
             int userCreated = users.insert(newUser);
-            System.out.println(userCreated);
         } catch (SQLException e) {
             users = null;
         }
