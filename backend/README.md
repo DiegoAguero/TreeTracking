@@ -51,6 +51,7 @@ WEATHER_API_KEY=${yourApikeyFrom_home.openweathermap.org}
 
 *If the variables are not correctly provided, it redirects to `/conditions`.
 **The `locationId` corresponds to `id_property`.
+**The `days` corresponds to number of interval.
 
 ## Endpoint for countries in database:
 
@@ -59,5 +60,23 @@ WEATHER_API_KEY=${yourApikeyFrom_home.openweathermap.org}
 ## Endpoint for localities with countries in database:
 
 `localhost:8080/localities`
+
+## Endpoint for Register user:
+
+`localhost:8080/register`
+
+*Receives user data to register on database.
+
+## Endpoint for hashPassword from email:
+
+`localhost:8080/emailvalidation?email?${emailLogin}`
+
+*The `emailLogin` corresponds to `email`.
+
+## Endpoint for Login:
+
+`localhost:8080/login`
+
+*Return data from user with correctly login
 
 
