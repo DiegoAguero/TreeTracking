@@ -95,6 +95,31 @@ public class UserDAO {
         return user.getPassword();
     }
 
+    public boolean emailExists(String email) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean exists = false;
+        try {
+            conn = ConnectionDAO.getConnection();
+            if (conn != null) {
+                stmt = conn.prepareStatement(SQL_SELECT_BY_EMAIL);
+                stmt.setString(1, email);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    exists = rs.getInt(1) > 0;
+                }
+            }
+        } catch (SQLException ex) {
+            exists = false;
+        } finally {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
+        }
+        return exists;
+    }
+
     public UserDTO login(String email, String password) throws SQLException{
         Connection conn = null;
         PreparedStatement stmt = null;

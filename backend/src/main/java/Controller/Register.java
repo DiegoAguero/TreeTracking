@@ -52,11 +52,24 @@ public class Register extends HttpServlet {
         Gson gson = new Gson();
         UserDTO userToRegister = gson.fromJson(jsonString, UserDTO.class);
         try {
+          if (users.emailExists(userToRegister.getEmail())) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().write("{\"userCreated\": false, \"message\": \"Email already exists\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+          } else {
             int userCreated = users.insert(userToRegister);
+            if (userCreated > 0) {
+              response.setStatus(HttpServletResponse.SC_OK);
+              response.getWriter().write("{\"userCreated\": true, \"message\": \"User created successfully\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+            } else {
+              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+              response.getWriter().write("{\"userCreated\": false,  \"message\": \"User insertion error\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+            }
+          }
         } catch (SQLException e) {
-            users = null;
+          response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+          response.getWriter().write("{\"userCreated\": false, \"message\": \"Internal server error: " + e.getMessage() + "\"}");
+          users = null;
         }
-
     }
 
     @Override
