@@ -61,11 +61,8 @@ public class Register extends HttpServlet {
             jsonBuilder.append(line);
         }
         String jsonString = jsonBuilder.toString();
-        System.out.println(jsonString);
         Gson gson = new Gson();
         UserDTO userToRegister = gson.fromJson(jsonString, UserDTO.class);
-        Date registerDate = new Date(System.currentTimeMillis());
-        userToRegister.setRegisterDate(registerDate);
         try {
             int userCreated = users.insert(userToRegister);
         } catch (SQLException e) {
@@ -74,14 +71,16 @@ public class Register extends HttpServlet {
 
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
+    protected void doOptions(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
 
 }

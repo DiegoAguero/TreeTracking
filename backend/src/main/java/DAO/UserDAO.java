@@ -12,7 +12,8 @@ public class UserDAO {
     private static final String SQL_SELECT_ALL = "SELECT * FROM users";
     private static final String SQL_LOGIN = "SELECT * FROM users WHERE email = ? AND password = ?";
     private static final String SQL_SELECT = "SELECT * FROM users WHERE id_user = ?";
-    private static final String SQL_INSERT = "INSERT INTO users(email, password, id_locality, registerDate) VALUES(?, ?, ?, ?)";
+    private static final String SQL_SELECT_BY_EMAIL = "SELECT * FROM users WHERE email = ?";
+    private static final String SQL_INSERT = "INSERT INTO users(email, password, id_locality, registerDate) VALUES(?, ?, ?, NOW())";
     private static final String SQL_UPDATE = "UPDATE properties SET coord_x=?, coord_y=?, description=? WHERE id_property = ?";
     private static final String SQL_DELETE = "DELETE FROM properties WHERE id_property=?";
     private UserDTO fromResultSet(ResultSet rs) throws SQLException{
@@ -36,12 +37,10 @@ public class UserDAO {
                 stmt.setString(1, user.getEmail());
                 stmt.setString(2, user.getPassword());
                 stmt.setInt(3, user.getId_Locality());
-                stmt.setDate(4, user.getRegisterDate());
             }else{
                 stmt.setString(1, user.getEmail());
                 stmt.setString(2, user.getPassword());
                 stmt.setNull(3, user.getId_Locality());
-                stmt.setDate(4, user.getRegisterDate());
             }
             rows = stmt.executeUpdate();
             conn.close();
@@ -72,6 +71,28 @@ public class UserDAO {
             user = null;
         }
         return user;
+    }
+
+    public String selectByEmail(String email) throws SQLException{
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        UserDTO user = null;
+        try {
+            conn = ConnectionDAO.getConnection();
+            if (conn != null) {
+                stmt = conn.prepareStatement(SQL_SELECT_BY_EMAIL);
+                stmt.setString(1, email);
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    user = fromResultSet(rs);
+                }
+                conn.close();
+            }
+        } catch (SQLException ex) {
+            user = null;
+        }
+        return user.getPassword();
     }
 
     public UserDTO login(String email, String password) throws SQLException{
