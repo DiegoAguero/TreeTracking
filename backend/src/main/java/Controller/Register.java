@@ -4,9 +4,12 @@
  */
 package Controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+
+import com.google.gson.Gson;
 
 import DAO.UserDAO;
 import DTO.UserDTO;
@@ -18,21 +21,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "Register", urlPatterns = {"/register"})
 public class Register extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -45,7 +33,13 @@ public class Register extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+                
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
     }
 
     /**
@@ -59,15 +53,21 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        response.setContentType("application/json");
         UserDAO users = new UserDAO();
+        BufferedReader reader = request.getReader();
+        StringBuilder jsonBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonBuilder.append(line);
+        }
+        String jsonString = jsonBuilder.toString();
+        System.out.println(jsonString);
+        Gson gson = new Gson();
+        UserDTO userToRegister = gson.fromJson(jsonString, UserDTO.class);
+        Date registerDate = new Date(System.currentTimeMillis());
+        userToRegister.setRegisterDate(registerDate);
         try {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            String locality_id = request.getParameter("locality");
-            UserDTO newUser = new UserDTO(email, password, Integer.parseInt(locality_id));
-            int userCreated = users.insert(newUser);
+            int userCreated = users.insert(userToRegister);
         } catch (SQLException e) {
             users = null;
         }

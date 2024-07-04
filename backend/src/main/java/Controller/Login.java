@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -20,19 +21,6 @@ import com.google.gson.Gson;
 @WebServlet(name = "Login", urlPatterns = {"/login"})
 public class Login extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -46,7 +34,13 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
     }
 
     /**
@@ -59,17 +53,22 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        BufferedReader reader = request.getReader();
+        StringBuilder jsonBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            jsonBuilder.append(line);
+        }
+        String jsonString = jsonBuilder.toString();
+        Gson gson = new Gson();
+        UserDTO userLogin = gson.fromJson(jsonString, UserDTO.class);
         UserDAO users = new UserDAO();
         UserDTO user = null;
         try {
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-            user = users.login(email, password);
-            System.out.println(user);
+            user = users.login(userLogin.getEmail(), userLogin.getPassword());
             if(user != null){
                 TokenService tokenService = new TokenService();
-                String JWT = tokenService.createJWT(String.valueOf(user.getId()), user.getEmail(), String.valueOf(user.getLocality_id()));
+                String JWT = tokenService.createJWT(String.valueOf(user.getId()), user.getEmail(), String.valueOf(user.getId_Locality()));
                 response.addHeader("Authorization", "Bearer " + JWT);
                 String jsonJWT = new Gson().toJson(JWT);
                 response.getWriter().write(jsonJWT);

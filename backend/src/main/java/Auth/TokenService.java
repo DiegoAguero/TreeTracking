@@ -1,15 +1,11 @@
 package Auth;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwt;
-import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.Claims;
 
 import javax.crypto.SecretKey;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Date;
 
 import DAO.ConnectionDAO;

@@ -32,10 +32,17 @@ public class UserDAO {
         try {
             conn = ConnectionDAO.getConnection();
             stmt = conn.prepareStatement(SQL_INSERT);
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getPassword());
-            stmt.setInt(3, user.getLocality_id());
-            stmt.setDate(4, user.getRegisterDate());
+            if(user.getId_Locality() >= 1){
+                stmt.setString(1, user.getEmail());
+                stmt.setString(2, user.getPassword());
+                stmt.setInt(3, user.getId_Locality());
+                stmt.setDate(4, user.getRegisterDate());
+            }else{
+                stmt.setString(1, user.getEmail());
+                stmt.setString(2, user.getPassword());
+                stmt.setNull(3, user.getId_Locality());
+                stmt.setDate(4, user.getRegisterDate());
+            }
             rows = stmt.executeUpdate();
             conn.close();
         } catch (SQLException ex) {

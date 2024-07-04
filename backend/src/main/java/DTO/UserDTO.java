@@ -9,20 +9,20 @@ public class UserDTO {
     private int id;
     private String email;
     private String password;
-    private int locality_id;
+    private int id_locality;
     private Date registerDate;
-    public UserDTO(int id, String email, String password, int locality_id) {
+    public UserDTO(int id, String email, String password, int id_locality) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.locality_id = locality_id;
+        this.id_locality = id_locality;
         this.registerDate = new Date(System.currentTimeMillis());
     }
 
-    public UserDTO(String email, String password, int locality_id) {
+    public UserDTO(String email, String password, int id_locality) {
         this.email = email;
         this.password = password;
-        this.locality_id = locality_id;
+        this.id_locality = id_locality;
         this.registerDate = new Date(System.currentTimeMillis());
     }
 
@@ -43,8 +43,8 @@ public class UserDTO {
         this.password = password;
     }
 
-    public void setLocality_id(int locality_id) {
-        this.locality_id = locality_id;
+    public void setLocality_id(int id_locality) {
+        this.id_locality = id_locality;
     }
 
     public void setRegisterDate(Date registerDate) {
@@ -64,8 +64,8 @@ public class UserDTO {
         return password;
     }
 
-    public int getLocality_id() {
-        return locality_id;
+    public int getId_Locality() {
+        return id_locality;
     }
     
     public Date getRegisterDate() {
