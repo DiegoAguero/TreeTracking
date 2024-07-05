@@ -41,6 +41,17 @@ public class ReviewDTO {
         this.property_id = property_id;
         this.valoration = valoration;
     }
+    
+    /**
+     * 
+     * @param id_property
+     * @param valoration 
+     */
+    public ReviewDTO(int id_property, int valoration){
+        this.property_id = id_property;
+        this.valoration = valoration;
+    }
+    
     public void setId(int id) {
         this.id = id;
     }
