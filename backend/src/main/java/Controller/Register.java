@@ -2,13 +2,13 @@ package Controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import com.google.gson.Gson;
 
 import DAO.UserDAO;
 import DTO.UserDTO;
+import Utilities.RegisterHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -40,7 +40,6 @@ public class Register extends HttpServlet {
                 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-                
         UserDAO users = new UserDAO();
         BufferedReader reader = request.getReader();
         StringBuilder jsonBuilder = new StringBuilder();
@@ -54,20 +53,22 @@ public class Register extends HttpServlet {
         try {
           if (users.emailExists(userToRegister.getEmail())) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write("{\"userCreated\": false, \"message\": \"Email already exists\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+            response.getWriter().write(gson.toJson(new RegisterHandler(false, "User already exists", "The user " + userToRegister.getEmail() + " already exists")));
           } else {
             int userCreated = users.insert(userToRegister);
             if (userCreated > 0) {
               response.setStatus(HttpServletResponse.SC_OK);
-              response.getWriter().write("{\"userCreated\": true, \"message\": \"User created successfully\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+              response.getWriter().write(gson.toJson(new RegisterHandler(true, "User created successfully", "The user " + userToRegister.getEmail() + " has been created successfully")));
+
             } else {
               response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-              response.getWriter().write("{\"userCreated\": false,  \"message\": \"User insertion error\", \"user\": \"" + userToRegister.getEmail() + "\"}");
+              response.getWriter().write(gson.toJson(new RegisterHandler(false, "User insertion error",  userToRegister.getEmail())));
+
             }
           }
         } catch (SQLException e) {
           response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-          response.getWriter().write("{\"userCreated\": false, \"message\": \"Internal server error: " + e.getMessage() + "\"}");
+          response.getWriter().write(gson.toJson(new RegisterHandler(false, "Internal server error", e.getMessage())));
           users = null;
         }
     }

@@ -1,7 +1,6 @@
 package Controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import com.google.gson.Gson;
@@ -38,7 +37,7 @@ public class EmailRequest extends HttpServlet {
                 response.getWriter().write("{status: '401', message: 'unauthorized'}");
             }
         } catch (SQLException e) {
-            response.getWriter().write("{status: '404', message: 'email no encontrado'}");
+            response.getWriter().write("{status: '404', message: 'email not found'}");
         }
 
     }

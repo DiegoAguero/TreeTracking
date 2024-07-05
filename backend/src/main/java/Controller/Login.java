@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import Auth.TokenService;
 import DAO.UserDAO;
 import DTO.UserDTO;
+import Utilities.LoginHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -59,11 +60,10 @@ public class Login extends HttpServlet {
                 TokenService tokenService = new TokenService();
                 String JWT = tokenService.createJWT(String.valueOf(user.getId()), user.getEmail(), String.valueOf(user.getId_Locality()));
                 response.addHeader("Authorization", "Bearer " + JWT);
-                String jsonJWT = new Gson().toJson(JWT);
-                response.getWriter().write(jsonJWT);
+                response.getWriter().write(gson.toJson(new LoginHandler(true, "User logged successfully", JWT)));
+
             }else{
-                String json = new Gson().toJson("{status: '404', message: 'gmail invalido o contraseña invalida'}");
-                response.getWriter().write(json);
+                response.getWriter().write(gson.toJson(new LoginHandler(false, "Invalid email or invalid password", null)));
             }
         } catch (SQLException e) {
             user = null;
