@@ -1,4 +1,4 @@
-package Controller;
+package Controller.AccessControl;
 
 import java.io.IOException;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.Handler;
 
 public class LoginHandler extends JsonHandler {
     private Boolean userLogged;

@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Conditions;
 
 import DTO.ConditionDTO;
 import Utilities.WeatherConsults;

@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Conditions;
 
 import DAO.ConditionDAO;
 import DTO.ConditionDTO;

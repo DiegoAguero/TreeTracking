@@ -1,4 +1,4 @@
-package Controller;
+package Controller.Conditions;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;

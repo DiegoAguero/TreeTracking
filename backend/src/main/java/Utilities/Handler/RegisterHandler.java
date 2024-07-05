@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.Handler;
 
 public class RegisterHandler extends JsonHandler {
     private String user;

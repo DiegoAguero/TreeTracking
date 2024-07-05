@@ -14,7 +14,7 @@ import com.github.prominence.openweathermap.api.enums.UnitSystem;
 import com.github.prominence.openweathermap.api.model.Coordinate;
 import com.github.prominence.openweathermap.api.model.weather.Weather;
 
-import Controller.ConditionsToday;
+import Controller.Conditions.ConditionsToday;
 import DAO.ConditionDAO;
 import DAO.ConnectionDAO;
 import DAO.EntryDAO;

@@ -1,4 +1,4 @@
-package Controller;
+package Controller.AccessControl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 import DAO.UserDAO;
 import DTO.UserDTO;
-import Utilities.RegisterHandler;
+import Utilities.Handler.RegisterHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

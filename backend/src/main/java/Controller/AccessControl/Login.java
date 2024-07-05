@@ -1,4 +1,4 @@
-package Controller;
+package Controller.AccessControl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import Auth.TokenService;
 import DAO.UserDAO;
 import DTO.UserDTO;
-import Utilities.LoginHandler;
+import Utilities.Handler.LoginHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

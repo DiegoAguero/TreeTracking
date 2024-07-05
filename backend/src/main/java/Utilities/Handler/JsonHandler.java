@@ -1,4 +1,4 @@
-package Utilities;
+package Utilities.Handler;
 
 public abstract class JsonHandler {
     private String message;
