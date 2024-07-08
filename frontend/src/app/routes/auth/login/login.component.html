@@ -3,10 +3,10 @@
     <h1
       class="mb-4 text-4xl font-extrabold text-center leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"><mark class="px-2 text-[#16A34A] bg-[#DCFCE7] rounded dark:bg-blue-500">Contact</mark> Form</h1>
     <mat-form-field>
-      <mat-label>Name</mat-label>
-      <input placeholder="Your name" matInput type="text" formControlName="name">
-      @if (contactForm.get('name')?.touched && contactForm.get('name')?.invalid) {
-        <mat-error>{{ updateErrorMessage('name') }}</mat-error>
+      <mat-label>Email</mat-label>
+      <input placeholder="example@example.com" matInput type="email" formControlName="email">
+      @if (contactForm.get('email')?.touched && contactForm.get('email')?.invalid) {
+        <mat-error>{{ updateErrorMessage('email') }}</mat-error>
       }
     </mat-form-field>
 
@@ -25,7 +25,6 @@
       <mat-form-field>
         <mat-label>Password confirm</mat-label>
         <input
-          (change)="checkedErrorMustBeEqualTo($event, 'password')"
           [type]="hidePasswordConfirm() ? 'password' : 'text'"
           placeholder="Your password" matInput
           type="password"
@@ -51,15 +50,18 @@
       <mat-form-field>
         <mat-label>Locality</mat-label>
         <mat-select formControlName="locality">
-          @for (locality of localities(); track locality.id_locality) {
-            <mat-option [value]="locality.id_locality">{{ locality.localityName }}</mat-option>
+          @for (locality of uniqueLocalities().entries(); track $index) {
+            <mat-option [value]="locality[1]">{{ locality[0] }}</mat-option>
           }
         </mat-select>
+        @if (contactForm.get('password')?.touched && contactForm.get('password')?.invalid) {
+        <mat-error>{{ updateErrorMessage('password') }}</mat-error>
+        }
       </mat-form-field>
     }
 
     <button mat-raised-button type="button">Cancel</button>
-    <button [disabled]="!contactForm.valid" mat-raised-button color="primary" type="submit">
+    <button  [disabled]="!contactForm.valid" mat-raised-button color="primary" type="submit">
       {{ isLogin() ? 'Login' : 'Register' }}
     </button>
     <div class="w-full flex justify-end">

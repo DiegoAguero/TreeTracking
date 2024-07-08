@@ -1,0 +1,10 @@
+<div 
+  [style.color]="data.status ? 'white' : '#F44336'"
+  class="w-full h-full grid grid-flow-col place-items-center justify-around"
+>
+  <mat-icon>{{ data.icon }}</mat-icon>
+  <span>{{ data?.message }}</span>
+  <button mat-icon-button color="warn" (click)="closeSnakBar()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

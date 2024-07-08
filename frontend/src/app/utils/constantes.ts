@@ -14,7 +14,8 @@ export const CONSTANTES = {
       if (temp > 39) return '#FF0000';
       return '#000';
     }
-  }
+  },
+  USER_FAILD: 'Credential not valid'
 }
 
 Object.freeze(CONSTANTES);

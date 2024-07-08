@@ -116,17 +116,6 @@ export class AppComponent {
       this.markers.push(newMarker)
     }
 
-    // const bounds = new LngLatBounds();
-    // newMarkers.forEach(marker => bounds.extend(marker.getLngLat()));
-
-    // try {
-    //   this.mapService.mapSignal()!.fitBounds(bounds, {
-    //     padding: 200
-    //   });
-    // } catch (e) {
-    //   // console.log(e);
-    // }
-
   }
 
   removePopMap(){
