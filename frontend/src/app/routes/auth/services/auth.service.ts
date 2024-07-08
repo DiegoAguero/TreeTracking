@@ -87,7 +87,7 @@ export class AuthService {
           if (data) this.userIsLogged.set(true)
           else this.userIsLogged.set(false)
         }),
-        map( response => !response )
+        map(Boolean)
       )
   }
 
@@ -108,7 +108,7 @@ export class AuthService {
           if (data) this.userIsLogged.set(true)
           else this.userIsLogged.set(false)
         }),
-        map(response => !response)
+        map(Boolean)
       )
   }
 
