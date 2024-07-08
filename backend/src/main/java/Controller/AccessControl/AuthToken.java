@@ -9,6 +9,7 @@ import java.io.IOException;
 import com.google.gson.Gson;
 
 import Auth.TokenService;
+import Utilities.Handler.JwtHandler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,13 +39,15 @@ public class AuthToken extends HttpServlet {
 
         String header = request.getHeader("Authorization");
         TokenService tokenService = new TokenService();
-        if(header != null && header.startsWith("Bearer ")){
+        Gson gson = new Gson();
+        System.out.println(header);
+        if(header.startsWith("Bearer: ")){
             String JWT = header.substring(7);
             String jwtVerified = tokenService.verifyJWT(JWT);
-            String JSON = new Gson().toJson(jwtVerified);
-            response.getWriter().write(JSON);
+            response.getWriter().write(gson.toJson(new JwtHandler(true, "The JWT has been verified", jwtVerified)));
         }else{
-            response.getWriter().write("{status: 404, message: 'Token not found'}");
+            response.getWriter().write(gson.toJson(new JwtHandler(false, "The JWT is not valid", null)));
+
         }
     }
 

@@ -29,7 +29,7 @@ public class TokenService {
     }
 
     public String verifyJWT(String JWT){
-        String jwtVerified = null;
+        String userEmail = null;
         try{
             String JWTKEY = ConnectionDAO.getJWTKey();
             byte[] secretKeyBytes = JWTKEY.getBytes(StandardCharsets.UTF_8);
@@ -37,13 +37,12 @@ public class TokenService {
             Claims claimsJws = Jwts.parser()
                                     .verifyWith(secretKey)
                                     .build()
-                                    .parseSignedClaims(JWT)
+                                    .parseSignedClaims(JWT.replace(" ", ""))
                                     .getPayload();
-            System.out.println("Verified. " + claimsJws);
-            jwtVerified = claimsJws.toString();
+            userEmail = claimsJws.get("email", String.class);
         }catch(Exception e){
             e.printStackTrace();
         }
-        return jwtVerified;
+        return userEmail;
     }
 }
