@@ -34,13 +34,13 @@ export class AuthService {
       );
   }
 
-  loginUser(password: string, email: string): Observable<string>{
+  loginUser(password: string, email: string): Observable<any>{
     const url = `${environment.URL_API_SENSOR}login`;
     const body:Login = { email , password };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<string>(url, body, { headers })
+    return this.http.post<any>(url, body, { headers })
   }
 
   registerUser(register: Register): Observable<userRegisterResponseOk>{
