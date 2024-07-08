@@ -4,6 +4,6 @@ export interface routersLinksI {
   path: string,
   title: string
   children?: Routes,
-
+  haveCan: boolean
 }
 

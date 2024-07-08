@@ -11,12 +11,22 @@
   <!-- Options menu, show/hide. -->
   <div #divNav class="space-y-1 p-1 bg-white/75 backdrop-blur-md w-full ms-[2%] hidden rounded-md">
     @for (rou of defineRoute; track $index) {
-      <a
-        [routerLink]="rou.path"
-        (click)="showHideNav(divNav)"
-        routerLinkActive="bg-gray-200"
-        class="block active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100"
-      >{{ rou.title }}</a>
+      @if(!tokenComputed()){
+        <a
+          [routerLink]="rou.path"
+          (click)="showHideNav(divNav)"
+          routerLinkActive="bg-gray-200"
+          class="block active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100"
+        >{{ rou.title }}</a>
+      }
+    }
+    <!-- GRUP GUARD -->
+    @if(tokenComputed()){
+      @for (rou of routesAuth(); track $index) {
+        <a [routerLink]="rou.path" (click)="showHideNav(divNav)" routerLinkActive="bg-gray-200"
+          class="block active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100">{{
+          rou.title }}</a>
+      }
     }
   </div>
 </nav>

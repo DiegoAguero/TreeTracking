@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { DestroyRef, Injectable, inject } from '@angular/core';
+import { DestroyRef, Injectable, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CountryData, Locality } from '@core/interfaces/locality.interface';
 import { environment } from '@environments/environments';
-import { Observable, map, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Login, Register, userRegisterResponseOk } from '../interfaces/auth.interface';
+import { LocalStorageService } from '@storage/LocalStorage.service';
 
 @Injectable(
   {
@@ -15,6 +16,8 @@ export class AuthService {
 
   private readonly http = inject(HttpClient);
   private readonly _destroyRef = inject(DestroyRef);
+  public userIsLogged = signal<boolean>(false);
+  private localStorage = inject(LocalStorageService);
   constructor() { }
 
   getLocality(country:string): Observable<Locality[]>{
@@ -41,6 +44,14 @@ export class AuthService {
       'Content-Type': 'application/json',
     });
     return this.http.post<any>(url, body, { headers })
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap(( data ) => {
+          if( data ) this.userIsLogged.set(true)
+          else this.userIsLogged.set(false)
+        })
+      )
+    return this.http.post<any>(url, body, { headers })
   }
 
   registerUser(register: Register): Observable<userRegisterResponseOk>{
@@ -54,7 +65,6 @@ export class AuthService {
       );
   }
 
-
   checkUserLoginByEmail(email:string): Observable<string>{
     let params = new HttpParams()
       .set('email', email);
@@ -63,6 +73,44 @@ export class AuthService {
       .pipe(
         takeUntilDestroyed(this._destroyRef),
     )
+  }
+
+  checkToken(token: string): Observable<boolean> {
+    const url = `${environment.URL_API_SENSOR}auth`;
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(url, { headers })
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((data) => {
+          if (data) this.userIsLogged.set(true)
+          else this.userIsLogged.set(false)
+        }),
+        map(Boolean)
+      )
+  }
+
+  checkTokenEmpty(): Observable<boolean>{
+    const url = `${environment.URL_API_SENSOR}auth`;
+    const token = this.localStorage.getItem(environment.TOKEN);
+
+    if(!token) return of(false);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.get(url, { headers })
+      .pipe(
+        takeUntilDestroyed(this._destroyRef),
+        tap((data) => {
+          if (data) this.userIsLogged.set(true)
+          else this.userIsLogged.set(false)
+        }),
+        map(Boolean)
+      )
   }
 
 }

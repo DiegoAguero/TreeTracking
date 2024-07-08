@@ -25,3 +25,9 @@ export const decrypt = <T>(velueEncrypt: string, password: string): boolean | T 
     return false;
   }
 }
+
+export const decryptShow = <T>(velueEncrypt: string): T | null => {
+  const bytes = CryptoJs.AES.decrypt(velueEncrypt, environment.ENCRYPT.key).toString(CryptoJs.enc.Utf8);
+  if( !bytes ) return null;
+  return bytes as T;
+}
