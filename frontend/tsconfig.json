@@ -29,6 +29,8 @@
       "@utils/*": ["./src/app/utils/*"],
       "@core/*": ["./src/app/core/*"],
       "@routes/*": ["./src/app/routes/*"],
+      "@storage/*": ["./src/app/storage/*"],
+      "@guard/*" : ["./src/app/guard/*"],
     },
     "lib": [
       "ES2022",

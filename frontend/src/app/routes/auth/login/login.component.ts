@@ -19,6 +19,8 @@ import {
 } from '@angular/material/snack-bar';
 import { SnackbarCustomComponent } from '@shared/components/snackbar-custom/snackbar-custom.component';
 import { CONSTANTES } from '@utils/constantes';
+import { environment } from '@environments/environments';
+import { LocalStorageService } from '@storage/LocalStorage.service';
 
 
 
@@ -40,6 +42,7 @@ export default class LoginComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   private _snackBar = inject(MatSnackBar);
+  private _localStorage = inject(LocalStorageService);
   // Signals
   public isLogin = signal<boolean>(false);
   public errorMessage!: string;
@@ -138,6 +141,9 @@ export default class LoginComponent implements OnInit {
           }else{
             this.userLoginCheckedFailure(CONSTANTES.USER_FAILD);
           }
+        },
+        error: (err:Error) => {
+          this.userLoginCheckedFailure(CONSTANTES.USER_FAILD);
         }
       });
   }
@@ -147,7 +153,8 @@ export default class LoginComponent implements OnInit {
       .subscribe({
         next: (jwt) => {
           // Encryptar token
-          console.log(jwt);
+          this._localStorage.setItem(environment.TOKEN, jwt);
+          this.router.navigate(['/map']);
         },
         error: (err:Error) => {
           this.createSnackError(err.message);

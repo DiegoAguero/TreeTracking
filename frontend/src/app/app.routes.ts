@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@guard/auth.guard';
+
 
 export const routes: Routes = [
   {
@@ -10,21 +12,21 @@ export const routes: Routes = [
     path: 'auth',
     title: 'Unete a nosotros',
     loadComponent: () => import('@routes/auth/layaout.component'),
-    loadChildren: () => import('@routes/auth/auth.routes')
+    loadChildren: () => import('@routes/auth/auth.routes'),
   },
-  // TODO: rutas con CanActived
   {
     path: 'table',
     title: 'Tabla',
     loadComponent: () => import('@routes/zones/components/table/table.component'),
-    children: [
-    ]
+    children: [],
+    canActivate: [ authGuard ]
   },
   {
     path: 'map',
     title: 'Mapa',
     loadComponent: () => import('@maps/map-screen.component'),
-    children: []
+    children: [],
+    canActivate: [ authGuard ]
   },
   {
     path: 'zone/:id',
