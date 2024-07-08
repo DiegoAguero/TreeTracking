@@ -132,7 +132,7 @@ export default class LoginComponent implements OnInit {
       .subscribe({
         next: (hash:string) => {
           // Desencrypt
-          let isValidAccount:boolean = decrypt(hash);
+          let isValidAccount:boolean = decrypt(hash, password);
           if( isValidAccount ){
             this.userLoginCheckedSuccess(hash, email);
           }else{

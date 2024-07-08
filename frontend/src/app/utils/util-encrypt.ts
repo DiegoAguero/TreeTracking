@@ -14,10 +14,11 @@ export const encrypt = (value: string):string => {
  * @param velueEncrypt
  * @returns boolean
  */
-export const decrypt = <T>(velueEncrypt: string): boolean | T => {
+export const decrypt = <T>(velueEncrypt: string, password: string): boolean | T => {
   try {
     const bytes = CryptoJs.AES.decrypt(velueEncrypt, environment.ENCRYPT.key);
     let originalText = bytes.toString(CryptoJs.enc.Utf8);
+    if( password !== originalText ) return false;
     return (originalText.length > 0);
   } catch (error) {
     console.error('Error decrypting value:', error);
