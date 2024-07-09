@@ -10,7 +10,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   const LocalStorage = inject(LocalStorageService);
   const router = inject(Router);
   let token = LocalStorage.getItem(environment.TOKEN);
-  if (!token || authService.checkToken(token as string).subscribe()) {
+
+  if (!token || !authService.userIsLogged()) {
     router.navigate(['/home']);
     return false;
   };

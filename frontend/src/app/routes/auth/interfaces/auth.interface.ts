@@ -14,5 +14,16 @@ export interface userRegisterResponseOk {
   message: string;
   user?: string;
 }
+export interface userLoginResponseOk {
+  message: string;
+  user: string;
+  userLogged: boolean;
+}
+
+export interface responseJWT {
+  isVerified: boolean;
+  jwt?: string;
+  message: string;
+}
 
 

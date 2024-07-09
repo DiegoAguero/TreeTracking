@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CountryData, Locality } from '@core/interfaces/locality.interface';
 import { environment } from '@environments/environments';
 import { Observable, map, of, tap } from 'rxjs';
-import { Login, Register, userRegisterResponseOk } from '../interfaces/auth.interface';
+import { Login, Register, responseJWT, userLoginResponseOk, userRegisterResponseOk } from '../interfaces/auth.interface';
 import { LocalStorageService } from '@storage/LocalStorage.service';
 
 @Injectable(
@@ -37,21 +37,19 @@ export class AuthService {
       );
   }
 
-  loginUser(password: string, email: string): Observable<any>{
+  loginUser(password: string, email: string): Observable<userLoginResponseOk>{
     const url = `${environment.URL_API_SENSOR}login`;
     const body:Login = { email , password };
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<any>(url, body, { headers })
+    return this.http.post<userLoginResponseOk>(url, body, { headers })
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap(( data ) => {
-          if( data ) this.userIsLogged.set(true)
-          else this.userIsLogged.set(false)
+        tap(( { userLogged } ) => {
+          this.userIsLogged.set(userLogged);
         })
-      )
-    return this.http.post<any>(url, body, { headers })
+      );
   }
 
   registerUser(register: Register): Observable<userRegisterResponseOk>{
@@ -81,14 +79,13 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get(url, { headers })
+    return this.http.get<responseJWT>(url, { headers })
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap((data) => {
-          if (data) this.userIsLogged.set(true)
-          else this.userIsLogged.set(false)
+        tap(({ isVerified }) => {
+          this.userIsLogged.set(isVerified);
         }),
-        map(Boolean)
+        map(({ isVerified }) => isVerified)
       )
   }
 
@@ -102,14 +99,13 @@ export class AuthService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-    return this.http.get(url, { headers })
+    return this.http.get<responseJWT>(url, { headers })
       .pipe(
         takeUntilDestroyed(this._destroyRef),
-        tap((data) => {
-          if (data) this.userIsLogged.set(true)
-          else this.userIsLogged.set(false)
+        tap(({ isVerified }) => {
+          this.userIsLogged.set(isVerified);
         }),
-        map(Boolean)
+        map(({ isVerified }) => isVerified)
       )
   }
 

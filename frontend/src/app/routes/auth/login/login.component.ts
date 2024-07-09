@@ -151,10 +151,11 @@ export default class LoginComponent implements OnInit {
   userLoginCheckedSuccess(hash:string, email:string){
     this.authService.loginUser(hash, email)
       .subscribe({
-        next: (jwt) => {
+        next: ({ user, message }) => {
           // Encryptar token
-          this._localStorage.setItem(environment.TOKEN, jwt);
-          this.router.navigate(['/map']);
+          this._localStorage.setItem(environment.TOKEN, user);
+          this.createSnackSuccefully(message);
+          this.router.navigate(['/table']);
         },
         error: (err:Error) => {
           this.createSnackError(err.message);

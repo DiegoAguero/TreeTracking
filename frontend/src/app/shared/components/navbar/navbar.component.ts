@@ -1,8 +1,9 @@
-import { Component, computed, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, Input, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { RouterLink, RouterModule, Routes } from '@angular/router';
 import { routersLinksI } from '../../../core/interfaces/routes.interface';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@routes/auth/services/auth.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,16 +12,20 @@ import { AuthService } from '@routes/auth/services/auth.service';
   imports: [RouterLink, CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService);
   public tokenComputed = computed(() => {
     return this.authService.userIsLogged();
   });
+  private subcriptions!: Subscription;
 
   public routesAuth = signal<routersLinksI[]>([]);
 
   constructor(){
-    this.authService.checkTokenEmpty().subscribe();
+    this.subcriptions = this.authService.checkTokenEmpty().subscribe();
+  }
+  ngOnDestroy(): void {
+    this.subcriptions.unsubscribe();
   }
   ngOnInit(): void {
     const tempRoutes: routersLinksI[] = []

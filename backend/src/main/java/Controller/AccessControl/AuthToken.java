@@ -41,13 +41,12 @@ public class AuthToken extends HttpServlet {
         TokenService tokenService = new TokenService();
         Gson gson = new Gson();
         System.out.println(header);
-        if(header.startsWith("Bearer: ")){
+        if(header.startsWith("Bearer ")){
             String JWT = header.substring(7);
             String jwtVerified = tokenService.verifyJWT(JWT);
             response.getWriter().write(gson.toJson(new JwtHandler(true, "The JWT has been verified", jwtVerified)));
         }else{
             response.getWriter().write(gson.toJson(new JwtHandler(false, "The JWT is not valid", null)));
-
         }
     }
 
