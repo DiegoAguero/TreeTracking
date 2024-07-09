@@ -33,7 +33,7 @@ With the following variables:
 
 ## Database Design
 
-![Database Design](https://imgur.com/a/YYX1Gx7)
+![Database Design](./frontend/src/assets/images/DatabaseDesign.png)
 
 ## Deployment
 
