@@ -15,7 +15,7 @@ export const CONSTANTES = {
       return '#000';
     }
   },
-  USER_FAILD: 'Credential not valid'
+  USER_FAILD: 'Credenciales no validas'
 }
 
 Object.freeze(CONSTANTES);

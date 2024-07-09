@@ -109,11 +109,11 @@ export default class LoginComponent implements OnInit {
 
   updateErrorMessage(type: string) {
     if (this.contactForm.get(type)?.hasError('required')) {
-      this.errorMessage = 'You must enter a value';
+      this.errorMessage = 'Debes introducir un valor';
     } else if (this.contactForm.get(type)?.hasError('passwordIncomplete')){
-      this.errorMessage = `The password must have at least one capital letter and one number.`;
+      this.errorMessage = `La contraseña debe tener al menos una letra mayúscula y un número.`;
     } else if (this.contactForm.get(type)?.errors) {
-      this.errorMessage = `Not a valid ${type}`;
+      this.errorMessage = `No es válido: ${type}`;
     }
     return this.errorMessage;
   }
