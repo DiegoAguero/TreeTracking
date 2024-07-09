@@ -1,9 +1,11 @@
 package Utilities.Handler;
 
 public class JwtHandler extends JsonHandler {
+
     private Boolean isVerified;
     private String jwt;
-    public JwtHandler(Boolean isVerified, String message, String jwt){
+
+    public JwtHandler(Boolean isVerified, String message, String jwt) {
         super(message);
         this.isVerified = isVerified;
         this.jwt = jwt;
@@ -24,5 +26,5 @@ public class JwtHandler extends JsonHandler {
     public void setJwt(String jwt) {
         this.jwt = jwt;
     }
-    
+
 }

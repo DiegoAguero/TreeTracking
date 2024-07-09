@@ -17,18 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "Register", urlPatterns = {"/register"})
 public class Register extends HttpServlet {
-  
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-        response.setHeader("Access-Control-Allow-Credentials", "true");
-                
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -37,7 +25,7 @@ public class Register extends HttpServlet {
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-                
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         UserDAO users = new UserDAO();
@@ -51,25 +39,25 @@ public class Register extends HttpServlet {
         Gson gson = new Gson();
         UserDTO userToRegister = gson.fromJson(jsonString, UserDTO.class);
         try {
-          if (users.emailExists(userToRegister.getEmail())) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().write(gson.toJson(new RegisterHandler(false, "User already exists", "The user " + userToRegister.getEmail() + " already exists")));
-          } else {
-            int userCreated = users.insert(userToRegister);
-            if (userCreated > 0) {
-              response.setStatus(HttpServletResponse.SC_OK);
-              response.getWriter().write(gson.toJson(new RegisterHandler(true, "User created successfully", "The user " + userToRegister.getEmail() + " has been created successfully")));
-
+            if (users.emailExists(userToRegister.getEmail())) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write(gson.toJson(new RegisterHandler(false, "User already exists", "The user " + userToRegister.getEmail() + " already exists")));
             } else {
-              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-              response.getWriter().write(gson.toJson(new RegisterHandler(false, "User insertion error",  userToRegister.getEmail())));
+                int userCreated = users.insert(userToRegister);
+                if (userCreated > 0) {
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().write(gson.toJson(new RegisterHandler(true, "User created successfully", "The user " + userToRegister.getEmail() + " has been created successfully")));
 
+                } else {
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().write(gson.toJson(new RegisterHandler(false, "User insertion error", userToRegister.getEmail())));
+
+                }
             }
-          }
         } catch (SQLException e) {
-          response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-          response.getWriter().write(gson.toJson(new RegisterHandler(false, "Internal server error", e.getMessage())));
-          users = null;
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write(gson.toJson(new RegisterHandler(false, "Internal server error", e.getMessage())));
+            users = null;
         }
     }
 
