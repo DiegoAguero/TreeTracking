@@ -1,8 +1,10 @@
 package Utilities.Handler;
 
 public class LoginHandler extends JsonHandler {
+
     private Boolean userLogged;
     private String user;
+
     public LoginHandler(Boolean userLogged, String message, String user) {
         super(message);
         this.userLogged = userLogged;
@@ -24,5 +26,5 @@ public class LoginHandler extends JsonHandler {
     public void setUser(String user) {
         this.user = user;
     }
-    
+
 }

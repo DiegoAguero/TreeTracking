@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @WebServlet(name = "EmailRequest", urlPatterns = {"/emailvalidation"})
 public class EmailRequest extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -28,12 +27,12 @@ public class EmailRequest extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         try {
             String email = request.getParameter("email");
-            if(email != null){
+            if (email != null) {
                 UserDAO userToVerify = new UserDAO();
                 String hash = userToVerify.selectByEmail(email);
                 Gson gson = new Gson();
                 response.getWriter().write(gson.toJson(hash));
-            }else{
+            } else {
                 response.getWriter().write("{status: '401', message: 'unauthorized'}");
             }
         } catch (SQLException e) {
@@ -41,20 +40,6 @@ public class EmailRequest extends HttpServlet {
         }
 
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-    }
-
 
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)

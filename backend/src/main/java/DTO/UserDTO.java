@@ -1,16 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DTO;
-// import java.util.Date;
+
 import java.sql.Date;
+
 public class UserDTO {
+
     private int id;
     private String email;
     private String password;
     private int id_locality;
     private Date registerDate;
+
+    /**
+     * 
+     * @param id
+     * @param email
+     * @param password
+     * @param id_locality 
+     */
     public UserDTO(int id, String email, String password, int id_locality) {
         this.id = id;
         this.email = email;
@@ -19,6 +25,12 @@ public class UserDTO {
         this.registerDate = new Date(System.currentTimeMillis());
     }
 
+    /**
+     * 
+     * @param email
+     * @param password
+     * @param id_locality 
+     */
     public UserDTO(String email, String password, int id_locality) {
         this.email = email;
         this.password = password;
@@ -26,11 +38,17 @@ public class UserDTO {
         this.registerDate = new Date(System.currentTimeMillis());
     }
 
+    /**
+     * 
+     * @param email
+     * @param password 
+     */
     public UserDTO(String email, String password) {
         this.email = email;
         this.password = password;
         this.registerDate = new Date(System.currentTimeMillis());
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -50,7 +68,6 @@ public class UserDTO {
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
     }
-    
 
     public int getId() {
         return id;
@@ -67,9 +84,9 @@ public class UserDTO {
     public int getId_Locality() {
         return id_locality;
     }
-    
+
     public Date getRegisterDate() {
         return registerDate;
     }
-    
+
 }

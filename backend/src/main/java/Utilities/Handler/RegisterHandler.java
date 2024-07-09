@@ -1,8 +1,10 @@
 package Utilities.Handler;
 
 public class RegisterHandler extends JsonHandler {
+
     private String user;
     private Boolean userCreated;
+
     public RegisterHandler(Boolean userCreated, String message, String user) {
         super(message);
         this.userCreated = userCreated;
@@ -24,5 +26,5 @@ public class RegisterHandler extends JsonHandler {
     public void setUserCreated(Boolean userCreated) {
         this.userCreated = userCreated;
     }
-    
+
 }

@@ -1,7 +1,9 @@
 package Utilities.Handler;
 
 public abstract class JsonHandler {
+
     private String message;
+
     // In case of User Registration
     public JsonHandler(String message) {
         this.message = message;
@@ -15,5 +17,4 @@ public abstract class JsonHandler {
         return message;
     }
 
-    
 }
