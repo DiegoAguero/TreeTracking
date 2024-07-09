@@ -1,4 +1,54 @@
-<section>
-  <h2>Zona</h2>
-  {{ zone|json }}
+<section class="charts w-full h-[100vh] my-10 pb-7 grid place-items-center ">
+  <mat-form-field class="mb-10 w-2/4">
+    <mat-label>Choose one</mat-label>
+    <mat-select [formControl]="selected">
+      @for (item of optionsGrafic; track $index) {
+        <mat-option (click)="onSelectInput(item.value)" [value]="item.value">{{ item.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  <div class="">
+    <ngx-charts-line-chart #chartContainer
+      [view]="view()"
+      [scheme]="colorScheme()"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel()"
+      [timeline]="timeline"
+      [results]="multiSerieChart()"
+      (select)="onSelect($event)"
+      (activate)="onActivate($event)"
+      (deactivate)="onDeactivate($event)">
+    </ngx-charts-line-chart>
+    @defer(on viewport){
+      <ngx-charts-bar-horizontal-2d
+        [view]="view()"
+        [scheme]="colorScheme()"
+        [schemeType]="schemeType"
+        [results]="multiSerieChart()"
+        [gradient]="gradient"
+        [xAxis]="showXAxis"
+        [yAxis]="showYAxis"
+        [legend]="legend"
+        [legendPosition]="legendPosition"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel()"
+        [barPadding]="50"
+        (select)="onSelect($event)"
+        (activate)="onActivate($event)"
+        (deactivate)="onDeactivate($event)"
+      >
+      </ngx-charts-bar-horizontal-2d>
+    }@placeholder {
+      <p>Loading graph...</p>
+    }@loading(minimum 1.5s) {
+      <p>Loading graph...</p>
+    }
+  </div>
 </section>
