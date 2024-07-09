@@ -78,7 +78,7 @@ export default class ZoneComponent implements OnInit {
   public yAxisLabel = signal<string>('Temperature');
   public colorScheme = signal<string>('fire');
   public schemeType: ScaleType = ScaleType.Linear;
-  public gradient: boolean = true;
+  public gradient: boolean = false;
   public showXAxis: boolean = true;
   public showYAxis: boolean = true;
   public legendPosition: LegendPosition = LegendPosition.Below;

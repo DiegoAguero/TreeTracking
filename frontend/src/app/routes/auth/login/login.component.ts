@@ -65,7 +65,7 @@ export default class LoginComponent implements OnInit {
     this.isLogin.set( this.router.url.includes('login') );
     if (this.isLogin()) {
       this.contactForm = new FormGroup({
-        email: new FormControl('javier.010@gmail.com', [Validators.required, ValidatorsCustom.emailAddress()]),
+        email: new FormControl('', [Validators.required, ValidatorsCustom.emailAddress()]),
         password: new FormControl('', [Validators.required, ValidatorsCustom.passwordLength()]),
       })
     } else {
