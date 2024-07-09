@@ -46,7 +46,7 @@ public class Login extends HttpServlet {
                 TokenService tokenService = new TokenService();
                 String JWT = tokenService.createJWT(String.valueOf(user.getId()), user.getEmail(), String.valueOf(user.getId_Locality()));
                 response.addHeader("Authorization", "Bearer " + JWT);
-                response.getWriter().write(gson.toJson(new LoginHandler(true, "User log ged successfully", JWT)));
+                response.getWriter().write(gson.toJson(new LoginHandler(true, "User logged successfully", JWT)));
 
             } else {
                 response.getWriter().write(gson.toJson(new LoginHandler(false, "Invalid email or invalid password", null)));
