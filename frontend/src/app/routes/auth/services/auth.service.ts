@@ -109,5 +109,10 @@ export class AuthService {
       )
   }
 
+  logoutUser():void{
+    this.localStorage.removeItem(environment.TOKEN);
+    this.userIsLogged.set(false);
+  }
+
 }
 

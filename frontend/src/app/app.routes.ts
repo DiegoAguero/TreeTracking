@@ -7,26 +7,38 @@ export const routes: Routes = [
     path: 'home',
     title: 'Tree Tracking',
     loadComponent: () => import('@routes/home/home-page.component'),
+    data: {
+      icon: 'home'
+    }
   },
   {
     path: 'auth',
     title: 'Unete a nosotros',
     loadComponent: () => import('@routes/auth/layaout.component'),
     loadChildren: () => import('@routes/auth/auth.routes'),
+    data: {
+      icon: 'lock'
+    }
   },
   {
     path: 'table',
     title: 'Tabla',
     loadComponent: () => import('@routes/zones/components/table/table.component'),
     children: [],
-    canActivate: [ authGuard ]
+    canActivate: [ authGuard ],
+    data: {
+      icon: 'table_chart'
+    }
   },
   {
     path: 'map',
     title: 'Mapa',
     loadComponent: () => import('@maps/map-screen.component'),
     children: [],
-    canActivate: [ authGuard ]
+    canActivate: [ authGuard ],
+    data: {
+      icon: 'map'
+    }
   },
   {
     path: 'zone/:id',

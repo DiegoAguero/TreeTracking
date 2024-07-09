@@ -16,17 +16,25 @@
           [routerLink]="rou.path"
           (click)="showHideNav(divNav)"
           routerLinkActive="bg-gray-200"
-          class="block active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100"
-        >{{ rou.title }}</a>
+          class="flex items-center justify-between active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100"
+        >
+          <mat-icon>{{ rou.icon }}</mat-icon>  {{ rou.title }}
+        </a>
       }
     }
     <!-- GRUP GUARD -->
     @if(tokenComputed()){
       @for (rou of routesAuth(); track $index) {
         <a [routerLink]="rou.path" (click)="showHideNav(divNav)" routerLinkActive="bg-gray-200"
-          class="block active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100">{{
-          rou.title }}</a>
+          class="flex items-center justify-between active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100"
+        >
+          <mat-icon>{{ rou.icon }}</mat-icon> {{ rou.title }}
+        </a>
       }
+      <a  [routerLink]="'home'" (click)="showHideNav(divNav, true)" routerLinkActive="bg-gray-200" title="Logout"
+        class="flex items-center justify-between active:bg-gray-200 rounded-md px-4 py-2 text-base font-medium text-red-500 hover:bg-gray-100">
+        <mat-icon>exit_to_app</mat-icon> Cerrar sesión
+      </a>
     }
   </div>
 </nav>

@@ -1,15 +1,18 @@
-import { Component, computed, inject, Input, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterModule, Routes } from '@angular/router';
 import { routersLinksI } from '../../../core/interfaces/routes.interface';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@routes/auth/services/auth.service';
 import { Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
 
+
+const MAT_MODULE = [MatIconModule];
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, CommonModule, RouterModule],
+  imports: [RouterLink, CommonModule, RouterModule, MAT_MODULE],
   templateUrl: './navbar.component.html',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
@@ -42,12 +45,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @Input({
     required: true, transform: (value:Routes) => {
       if( !value ) return value;
-      return value.map( ({ path, title, children, canActivate }) => {
+      return value.map( ({ path, title, children, canActivate, data }) => {
           return {
             path,
             title,
             children,
             haveCan: canActivate ? true : false,
+            icon: data?.['icon'] ? data?.['icon'] : 'more_horiz'
           } as routersLinksI;
       }).filter( rou => rou.title !== '' && rou.path !== '');
     }
@@ -55,7 +59,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   sidebarVisible: boolean = false;
 
-  showHideNav(el: HTMLDivElement){
+  showHideNav(el: HTMLDivElement, logout:boolean = false){
     if( el.classList.contains('hidden') ){
       el.animate([
           { height: '0px', opacity: 0 },
@@ -79,6 +83,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }).onfinish = () => {
         el.classList.add('hidden');
       };
+    }
+
+    if( logout ){
+      this.authService.logoutUser();
     }
   }
 }
