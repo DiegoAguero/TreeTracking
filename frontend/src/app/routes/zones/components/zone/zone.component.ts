@@ -110,11 +110,11 @@ export default class ZoneComponent implements OnInit {
           }
           let tempMultiSerie: MultiSerieChar = {
             name: zones[0].property.locality,
-            series,
+            series: this.sortSeries(series),
           }
           let multiSerieHumidity: MultiSerieChar = {
             name: zones[0].property.locality,
-            series: seriesHumidity
+            series: this.sortSeries(seriesHumidity)
           }
           this.serieHumidity.set([multiSerieHumidity]);
           this.serieTemperature.set([tempMultiSerie]);
@@ -124,6 +124,19 @@ export default class ZoneComponent implements OnInit {
     this.getViewportSize();
     this.renderer.listen('window', 'resize', () => {
       this.getViewportSize();
+    });
+  }
+
+
+  sortSeries(series:Series[]){
+    return series.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
     });
   }
 

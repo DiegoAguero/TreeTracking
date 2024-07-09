@@ -44,7 +44,8 @@ export const routes: Routes = [
     path: 'zone/:id',
     title: '',
     loadComponent: () => import('@routes/zones/components/zone/zone.component'),
-    children: []
+    children: [],
+    canActivate: [ authGuard ]
   },
   {
     path: '',
