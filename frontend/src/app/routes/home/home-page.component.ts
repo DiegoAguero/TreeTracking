@@ -1,22 +1,19 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
+import { AuthService } from '@routes/auth/services/auth.service';
 import { InformationGenericComponent } from '@shared/components/information-generic/information-generic.component';
-import { InputRangeComponent } from '@shared/components/input-range/input-range.component';
 
 
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [InformationGenericComponent, NgOptimizedImage, InputRangeComponent ],
+  imports: [InformationGenericComponent, NgOptimizedImage],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  styles: ``
 })
 export default class HomePageComponent {
-
-  rangeMock = {
-    min: 10,
-    max: 100,
-    initValue: 10,
-  }
+  private readonly authService = inject(AuthService);
+  public isLoggedUser = computed( () => this.authService.userIsLogged() );
+  constructor(){}
 }

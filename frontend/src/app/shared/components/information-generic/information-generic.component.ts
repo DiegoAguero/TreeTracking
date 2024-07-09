@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CheckCircleComponent } from '@shared/svg/check-circle/check-circle.component';
 
 interface inforGeneral {
@@ -11,13 +12,13 @@ interface inforGeneral {
 @Component({
   selector: 'app-information-generic',
   standalone: true,
-  imports: [ CheckCircleComponent ],
+  imports: [ CheckCircleComponent, RouterModule ],
   templateUrl: './information-generic.component.html',
   styles: ``
 })
 export class InformationGenericComponent {
 
-  inforGeneral: inforGeneral[] = [
+  public inforGeneral: inforGeneral[] = [
     {
       classLi: 'flex items-center gap-3 text-neutral-800',
       svgClass: 'w-5 h-5 fill-green-200',
@@ -33,6 +34,8 @@ export class InformationGenericComponent {
       svgClass: 'w-5 h-5 fill-green-200',
       textSvg: 'Temperatura y predicciones del tiempo.'
     },
-  ]
+  ];
+
+  link = input<boolean>(false);
 
 }
