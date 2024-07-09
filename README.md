@@ -29,9 +29,15 @@ With the following variables:
 
 `WEATHER_API_KEY`: Api Key from the OpenWeatherMap.
 
+`JWT_KEY`: JWT Key from the TokenService class.
+
+## Database Design
+
+![Database Design](https://imgur.com/a/YYX1Gx7)
+
 ## Deployment
 
-To deploy this project you will have run the backend server using your JAVA IDE.
+To deploy this project you will have run the backend server using your JAVA IDE, making sure you have your Database Server running.
 
 Then, you will have to run the frontend server, going to:
 
@@ -42,12 +48,12 @@ Then, you will have to run the frontend server, going to:
 And then using:
 
 ```bash
-  ng s
+  npm start
 ```
 to run the Angular server.
 
 ## Authors
 
-- [@dalbert9615](https://github.com/dalbert9615)
-- [@DiegoAguero](https://github.com/DiegoAguero)
-- [@jarestrepot](https://github.com/jarestrepot)
+- [Carlos A. Díaz](https://github.com/dalbert9615)
+- [Diego Aguero](https://github.com/DiegoAguero)
+- [Javier Restrepo](https://github.com/jarestrepot)

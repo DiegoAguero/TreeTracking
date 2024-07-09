@@ -29,7 +29,6 @@ public class AuthToken extends HttpServlet {
         String header = request.getHeader("Authorization");
         TokenService tokenService = new TokenService();
         Gson gson = new Gson();
-        System.out.println(header);
         if (header.startsWith("Bearer ")) {
             String JWT = header.substring(7);
             String jwtVerified = tokenService.verifyJWT(JWT);
