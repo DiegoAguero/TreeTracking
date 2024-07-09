@@ -11,8 +11,8 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-label>Password</mat-label>
-      <input [type]="hidePassword() ? 'password' : 'text'" placeholder="Your password" matInput type="password" formControlName="password">
+      <mat-label>Contraseña</mat-label>
+      <input [type]="hidePassword() ? 'password' : 'text'" placeholder="Tu contraseña" matInput type="password" formControlName="password">
       <button mat-icon-button matSuffix (click)="hidePassword.set(!hidePassword())" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword()">
         <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
@@ -23,10 +23,10 @@
 
     @if(!isLogin()){
       <mat-form-field>
-        <mat-label>Password confirm</mat-label>
+        <mat-label>Confirmar contraseña</mat-label>
         <input
           [type]="hidePasswordConfirm() ? 'password' : 'text'"
-          placeholder="Your password" matInput
+          placeholder="Confirmar contraseña" matInput
           type="password"
           formControlName="confirmPassword">
         <button mat-icon-button matSuffix (click)="hidePasswordConfirm.set(!hidePasswordConfirm())" [attr.aria-label]="'Hide password'"
@@ -34,12 +34,12 @@
           <mat-icon>{{hidePasswordConfirm() ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
         @if(contactForm.get('confirmPassword')?.touched && contactForm.getError('mustBeEqual')){
-          <span class="text-red-500 m-0">Password no match</span>
+          <span class="text-red-500 m-0">Las contraseñas no coinciden</span>
         }
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Country</mat-label>
+        <mat-label>País</mat-label>
         <mat-select (selectionChange)="onCountryChanged()" formControlName="country">
           @for (country of countries(); track country.id_country) {
             <mat-option [value]="country.id_country">{{ country.countryName }}</mat-option>
@@ -48,7 +48,7 @@
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>Locality</mat-label>
+        <mat-label>Localidad</mat-label>
         <mat-select formControlName="locality">
           @for (locality of uniqueLocalities().entries(); track $index) {
             <mat-option [value]="locality[1]">{{ locality[0] }}</mat-option>
@@ -60,17 +60,17 @@
       </mat-form-field>
     }
 
-    <button mat-raised-button type="button">Cancel</button>
+    <button mat-raised-button type="button">Cancelar</button>
     <button  [disabled]="!contactForm.valid" mat-raised-button color="primary" type="submit">
-      {{ isLogin() ? 'Login' : 'Register' }}
+      {{ isLogin() ? 'Accede' : 'Registrate' }}
     </button>
     <div class="w-full flex justify-end">
       <p>
         @if(isLogin()){
-            Don't have an account? <a class="text-[#16A34A] underline" routerLink="/auth/register"> Register!</a>
+            ¿No tiene cuenta? <a class="text-[#16A34A] underline" routerLink="/auth/register"> Registrate!</a>
         }@else {
 
-            Already have an account? <a class="text-[#16A34A] underline" [routerLink]="['/auth/login']"> Access!</a>
+            ¿Tienes cuenta? <a class="text-[#16A34A] underline" [routerLink]="['/auth/login']"> Accede!</a>
           }
       </p>
     </div>

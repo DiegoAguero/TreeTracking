@@ -22,7 +22,7 @@ export default class MapScreenComponent {
   // MOCK
   public mockDateTemp = {
     min: 0,
-    max: 40,
+    max: 100,
     initValue: 15
   }
 
@@ -46,7 +46,7 @@ export default class MapScreenComponent {
   }
 
   filterByHumidity([min, value]: [number, number]):void{
-    this.coreService.getZonesByTemperature(min, value)
+    this.coreService.getZonesByHumidity(min, value)
       .pipe(
         takeUntilDestroyed(this._destroyRef)
       )

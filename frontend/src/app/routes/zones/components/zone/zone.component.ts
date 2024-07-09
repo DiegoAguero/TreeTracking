@@ -55,11 +55,11 @@ export default class ZoneComponent implements OnInit {
 
   public optionsGrafic: Grafics[] = [
     {
-      name: 'Temperature',
+      name: 'Temperatura',
       value: 'fire'
     },
     {
-      name: 'Humidity',
+      name: 'Humedad',
       value: 'ocean'
     }
   ]
@@ -73,16 +73,17 @@ export default class ZoneComponent implements OnInit {
   public yAxis: boolean = true;
   public showYAxisLabel: boolean = true;
   public showXAxisLabel: boolean = true;
-  public xAxisLabel: string = 'Day';
+  public xAxisLabel: string = 'Dias';
   public timeline: boolean = true;
-  public yAxisLabel = signal<string>('Temperature');
+  public yAxisLabel = signal<string>('Temperatura');
   public colorScheme = signal<string>('fire');
   public schemeType: ScaleType = ScaleType.Linear;
   public gradient: boolean = false;
   public showXAxis: boolean = true;
   public showYAxis: boolean = true;
   public legendPosition: LegendPosition = LegendPosition.Below;
-  public xArialLabel2d:string = 'Range'
+  public xArialLabel2d:string = 'Range';
+  public legendTitle = signal<string>('Estados');
 
 
   @Input() id = 'id';
@@ -108,6 +109,8 @@ export default class ZoneComponent implements OnInit {
               value: zone.humidity
             });
           }
+
+          this.legendTitle.set(zones[0].property.country);
           let tempMultiSerie: MultiSerieChar = {
             name: zones[0].property.locality,
             series: this.sortSeries(series),
@@ -143,11 +146,11 @@ export default class ZoneComponent implements OnInit {
 
   onSelectInput(event:string){
     if( event === Graficsenum.ocean ){
-      this.yAxisLabel.set('Humidity');
+      this.yAxisLabel.set('Humedad');
       this.colorScheme.set(Graficsenum.ocean);
       this.multiSerieChart.set(this.serieHumidity());
     }else if( event === Graficsenum.fire ){
-      this.yAxisLabel.set('Temperature');
+      this.yAxisLabel.set('Temperatura');
       this.colorScheme.set(Graficsenum.fire);
       this.multiSerieChart.set(this.serieTemperature());
     }

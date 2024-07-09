@@ -85,7 +85,7 @@ export class CoreService {
       .set('max', max);
     return this.http.get<Country[]>(`${environment.URL_API_SENSOR}/conditions/humidity`, { params })
       .pipe(
-        tap((country) => this.#zoneTree.set(country))
+        tap((country) => this.#zoneTree.set(country)),
       );
   }
 

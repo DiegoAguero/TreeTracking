@@ -20,8 +20,8 @@ export default class TableComponent implements OnInit {
   public dataService = computed( () =>
     getEntityCountryTable(this.coreService.zonesTreeComputed())
   );
-  public displayColumns: ColumnKeys<dataComputedCountry> = ['country', 'locality', 'humidity', 'fire_detected', 'description', 'actions' ];
-  public sortables: ColumnKeys<dataComputedCountry> = ['country', 'locality', 'humidity', 'fire_detected', 'description'];
+  public displayColumns: ColumnKeys<dataComputedCountry> = ['país', 'localidad', 'humedad', 'fuego', 'descripción', 'acciones' ];
+  public sortables: ColumnKeys<dataComputedCountry> = ['país', 'localidad', 'humedad', 'fuego', 'descripción'];
 
   constructor(){
   }

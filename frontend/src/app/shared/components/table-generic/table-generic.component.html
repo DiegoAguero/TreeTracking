@@ -16,7 +16,7 @@
             }@else {
               {{element[column]}}
             }
-            @if(column === 'actions'){
+            @if(column === 'acciones'){
               <a [routerLink]="['/zone', element.id]"  mat-icon-button color="primary" aria-label="Example icon button with a home icon">
                 <mat-icon>search</mat-icon>
               </a>
@@ -28,7 +28,7 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
       <tr class="hover:bg-gray-200" mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
     </mat-table>
-    <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons aria-label="Selecciona la página de elementos">
     </mat-paginator>
   </div>
 </section>

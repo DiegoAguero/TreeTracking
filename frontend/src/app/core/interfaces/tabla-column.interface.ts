@@ -7,13 +7,13 @@ export interface Accion<T = any>{
 }
 export interface dataComputedCountry {
   id: number
-  humidity: number,
-  fire_detected: boolean,
-  temperature: number,
-  description: string,
-  locality: string,
-  country: string,
-  actions?: string[]
+  humedad: number,
+  fuego: boolean,
+  temperatura: number,
+  descripción: string,
+  localidad: string,
+  país: string,
+  acciones?: string[]
 }
 export type ColumnKeys<T> = Array<keyof T>;
 
@@ -23,13 +23,13 @@ export const getEntityCountryTable = (countries: Country[]): dataComputedCountry
     let { id_property, country, locality, description } = property;
     let data = {
       id: id_property,
-      humidity,
-      fire_detected,
-      temperature,
-      country,
-      locality,
-      description
-    } as dataComputedCountry;
+      humedad: humidity,
+      fuego: fire_detected,
+      temperatura: temperature,
+      país: country,
+      localidad: locality,
+      descripción: description
+    } as  dataComputedCountry;
     result.push({...data});
   }
   return result;
